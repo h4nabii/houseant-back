@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+//@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
 public class DatabaseConnectionTest {
 
