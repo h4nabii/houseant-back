@@ -4,23 +4,23 @@
 <mapper namespace="com.example.backend.dao.UserDao">
 
     <select id="findAll" resultType="com.example.backend.entity.User">
-        SELECT * FROM User
+        SELECT * FROM user
     </select>
 
     <select id="findByKey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
-        SELECT * FROM User WHERE ${column} = #{value}
+        SELECT * FROM user WHERE ${column} = #{value}
     </select>
 
     <insert id="insert" parameterType="com.example.backend.entity.User">
-        INSERT INTO User (username, password, email) VALUES (#{username}, #{password}, #{email})
+        INSERT INTO user (username, password, email) VALUES (#{username}, #{password}, #{email})
     </insert>
 
     <delete id="delete" parameterType="java.lang.Integer">
-        DELETE FROM User WHERE user_id = #{userId}
+        DELETE FROM user WHERE user_id = #{userId}
     </delete>
 
     <update id="update" parameterType="com.example.backend.entity.User">
-        UPDATE User SET username=#{username}, password=#{password}, email=#{email} WHERE user_id=#{userId}
+        UPDATE user SET username=#{username}, password=#{password}, email=#{email} WHERE user_id=#{userId}
     </update>
 
 </mapper>
