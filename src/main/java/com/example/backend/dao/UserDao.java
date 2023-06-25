@@ -10,7 +10,7 @@ import java.util.Objects;
 @Mapper
 public interface UserDao {
     List<User> findAll();
-    List<User> findbykey(Map<String, Object> params);
+    List<User> findByKey(Map<String, Object> params);
     void insert(User user);
     void delete(Integer user_id);
     void update(User user);

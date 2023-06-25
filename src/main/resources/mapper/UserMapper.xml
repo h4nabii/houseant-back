@@ -7,7 +7,7 @@
         SELECT * FROM User
     </select>
 
-    <select id="findbykey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
+    <select id="findByKey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
         SELECT * FROM User WHERE ${column} = #{value}
     </select>
 

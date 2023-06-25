@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findByKey(Map<String, Object> params) {
-        return userDao.findbykey(params);
+        return userDao.findByKey(params);
     }
 
     @Override
