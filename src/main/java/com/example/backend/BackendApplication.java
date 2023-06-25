@@ -12,15 +12,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
 
+	private final JdbcTemplate jdbcTemplate;
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	public BackendApplication(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args){
 		Logger logger = Logger.getLogger("test");
 		try {
 			jdbcTemplate.queryForObject("SELECT 1", Integer.class);
