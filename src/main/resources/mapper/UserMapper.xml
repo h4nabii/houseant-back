@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.backend.dao.UserDao">
+
+    <select id="findAll" resultType="com.example.backend.entity.User">
+        SELECT * FROM User
+    </select>
+
+    <select id="findByKey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
+        SELECT * FROM User WHERE ${column} = #{value}
+    </select>
+
+    <insert id="insert" parameterType="com.example.backend.entity.User">
+        INSERT INTO User (username, password, email) VALUES (#{username}, #{password}, #{email})
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM User WHERE user_id = #{userId}
+    </delete>
+
+    <update id="update" parameterType="com.example.backend.entity.User">
+        UPDATE User SET username=#{username}, password=#{password}, email=#{email} WHERE user_id=#{userId}
+    </update>
+
+</mapper>

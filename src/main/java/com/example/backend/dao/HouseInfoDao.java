@@ -9,8 +9,8 @@ import java.util.Map;
 
 @Mapper
 public interface HouseInfoDao {
-    List<House> findall();
-    List<House> findbykey(Map<String, Object> params);
+    List<House> findAll();
+    List<House> findByKey(Map<String, Object> params);
     void insert(House house);
     void delete(Integer id);
     void update(House house);
