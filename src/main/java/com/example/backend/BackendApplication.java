@@ -1,5 +1,8 @@
 package com.example.backend;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,11 +21,12 @@ public class BackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		Logger logger = Logger.getLogger("test");
 		try {
 			jdbcTemplate.queryForObject("SELECT 1", Integer.class);
-			System.out.println("Database connection test is successful.");
+			logger.log(Level.INFO, "Database connection test is successful.");
 		} catch (Exception e) {
-			System.out.println("Database connection test failed.");
+			logger.log(Level.INFO, "Database connection test failed.");
 			e.printStackTrace();
 		}
 	}
