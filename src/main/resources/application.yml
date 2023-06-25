@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Rtx786456
+    url: jdbc:mysql://111.231.2.157:3306/houseant?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
