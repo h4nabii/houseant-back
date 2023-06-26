@@ -79,4 +79,19 @@ public class UserController {
         logger.info("logout success");
         return ResponseEntity.ok().body("Logout success");
     }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User newUser) {
+        Logger logger = LogManager.getLogger(UserController.class);
+        // Check if account is already used
+        User existingUser = userService.findByAccount(newUser.getAccount());
+        if (existingUser != null) {
+            logger.warn("Account already exists");
+            return ResponseEntity.badRequest().body("Account already exists");
+        }
+
+        // TODO: You may want to encrypt the password before saving it to the database
+        userService.insert(newUser);
+        logger.info("User registered successfully");
+        return ResponseEntity.ok().body("User registered successfully");
+    }
 }
