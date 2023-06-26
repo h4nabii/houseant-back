@@ -64,4 +64,19 @@ public class UserController {
         }
 
     }
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response,
+                                         HttpServletRequest request){
+        Logger logger = LogManager.getLogger(UserController.class);
+        HttpSession session = request.getSession(false);
+        if(session!=null){
+            session.invalidate();
+        }
+        Cookie cookie = new Cookie("user", null); // overwrite with a null value
+        cookie.setMaxAge(0); // 0 means the cookie will be deleted immediately
+        response.addCookie(cookie);
+
+        logger.info("logout success");
+        return ResponseEntity.ok().body("Logout success");
+    }
 }
