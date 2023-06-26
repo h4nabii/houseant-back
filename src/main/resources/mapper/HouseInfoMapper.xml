@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.HouseInfoDao">
+
+    <resultMap id="HouseResultMap" type="com.example.backend.entity.House">
+        <id property="house_id" column="house_id" />
+        <result property="name" column="name" />
+        <result property="address" column="address" />
+        <result property="direction" column="direction" />
+        <result property="area" column="area" />
+        <result property="layout" column="layout" />
+        <result property="price" column="price" />
+        <result property="picture" column="picture" />
+        <result property="developer" column="developer" />
+        <result property="floor" column="floor" />
+        <result property="has_elevator" column="has_elevator" />
+        <result property="build_time" column="build_time" />
+    </resultMap>
+
+    <select id="findAll" resultMap="HouseResultMap">
+        SELECT * FROM house
+    </select>
+
+    <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
+    <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
+        SELECT * FROM house
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+            <if test="address != null">
+                AND address = #{address}
+            </if>
+            <if test="direction != null">
+                AND direction = #{direction}
+            </if>
+            <if test="area != null">
+                AND area = #{area}
+            </if>
+            <if test="layout != null">
+                AND layout = #{layout}
+            </if>
+            <if test="price != null">
+                AND price &lt; #{price}
+            </if>
+
+            <if test="developer != null">
+                AND developer = #{developer}
+            </if>
+            <if test="floor != null">
+                AND floor = #{floor}
+            </if>
+            <if test="has_elevator != null">
+                AND has_elevator = #{has_elevator}
+            </if>
+
+
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.example.backend.entity.House">
+        INSERT INTO house (name, address, direction, area, layout, price, picture, developer, floor, has_elevator, build_time)
+        VALUES (#{name}, #{address}, #{direction}, #{area}, #{layout}, #{price}, #{picture}, #{developer}, #{floor}, #{has_elevator}, #{build_time})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM house WHERE house_id = #{id}
+    </delete>
+
+    <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
+    <update id="update" parameterType="com.example.backend.entity.House">
+        UPDATE house SET
+                         name = #{name},
+                         address = #{address},
+                         direction = #{direction},
+                         area = #{area},
+                         layout = #{layout},
+                         price = #{price},
+                         picture = #{picture},
+                         developer = #{developer},
+                         floor = #{floor},
+                         has_elevator = #{has_elevator},
+                         build_time = #{build_time}
+        WHERE house_id = #{house_id}
+    </update>
+</mapper>

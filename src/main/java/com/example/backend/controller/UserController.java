@@ -41,7 +41,7 @@ public class UserController {
         User user=userService.findByAccount(UserAccount);
         if(user==null){
             logger.warn("user not found");
-            return ResponseEntity.badRequest().body("User not found");
+            return ResponseEntity.ok().body("User not found");
 
         }
         else if(user.getPassword().equals(Passwd_get)) {
@@ -60,8 +60,38 @@ public class UserController {
         else {
             logger.warn("wrong password");
             logger.warn(user);
-            return ResponseEntity.badRequest().body("Wrong password");
+            return ResponseEntity.ok().body("Wrong password");
         }
 
+    }
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response,
+                                         HttpServletRequest request){
+        Logger logger = LogManager.getLogger(UserController.class);
+        HttpSession session = request.getSession(false);
+        if(session!=null){
+            session.invalidate();
+        }
+        Cookie cookie = new Cookie("user", null); // overwrite with a null value
+        cookie.setMaxAge(0); // 0 means the cookie will be deleted immediately
+        response.addCookie(cookie);
+
+        logger.info("logout success");
+        return ResponseEntity.ok().body("Logout success");
+    }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User newUser) {
+        Logger logger = LogManager.getLogger(UserController.class);
+        // Check if account is already used
+        User existingUser = userService.findByAccount(newUser.getAccount());
+        if (existingUser != null) {
+            logger.warn("Account already exists");
+            return ResponseEntity.badRequest().body("Account already exists");
+        }
+
+        // TODO: You may want to encrypt the password before saving it to the database
+        userService.insert(newUser);
+        logger.info("User registered successfully");
+        return ResponseEntity.ok().body("User registered successfully");
     }
 }
