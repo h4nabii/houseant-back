@@ -10,6 +10,7 @@ import java.util.Map;
 public interface UserDao {
     List<User> findAll();
     List<User> findByKey(Map<String, Object> params);
+    User findByAccount(String account);
     void insert(User user);
     void delete(Integer user_id);
     void update(User user);

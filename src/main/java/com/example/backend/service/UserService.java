@@ -11,4 +11,5 @@ public interface UserService {
     void insert(User user);
     void delete(Integer userId);
     void update(User user);
+    User findByAccount(String account);
 }
