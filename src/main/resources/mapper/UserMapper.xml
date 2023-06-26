@@ -8,6 +8,13 @@
         FROM user
     </select>
 
+    <select id="findByAccount" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
+        SELECT *
+        FROM user
+        WHERE account =#{account}
+    </select>
+
+
     <select id="findByKey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
         SELECT *
         FROM user
