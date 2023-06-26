@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.ReservationDao">
+
+    <resultMap id="ReservationResultMap" type="com.example.backend.entity.Reservation">
+        <id property="res_id" column="res_id" />
+        <result property="account" column="account" />
+        <result property="time" column="time" />
+        <result property="type" column="type" />
+        <result property="content" column="content" />
+    </resultMap>
+
+    <select id="findAll" resultMap="ReservationResultMap">
+        SELECT * FROM reservation
+    </select>
+
+    <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
+    <select id="findByKey" resultMap="ReservationResultMap">
+        SELECT * FROM reservation WHERE res_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.backend.entity.Reservation">
+        INSERT INTO reservation (account, time, type, content)
+        VALUES (#{account}, #{time}, #{type}, #{content})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM reservation WHERE res_id = #{res_id}
+    </delete>
+
+    <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
+    <update id="update" parameterType="com.example.backend.entity.Reservation">
+        UPDATE reservation SET
+                               account = #{account},
+                               time = #{time},
+                               type = #{type},
+                               content = #{content}
+        WHERE res_id = #{res_id}
+    </update>
+</mapper>
