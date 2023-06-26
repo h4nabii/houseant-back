@@ -41,7 +41,7 @@ public class UserController {
         User user=userService.findByAccount(UserAccount);
         if(user==null){
             logger.warn("user not found");
-            return ResponseEntity.badRequest().body("User not found");
+            return ResponseEntity.ok().body("User not found");
 
         }
         else if(user.getPassword().equals(Passwd_get)) {
@@ -60,7 +60,7 @@ public class UserController {
         else {
             logger.warn("wrong password");
             logger.warn(user);
-            return ResponseEntity.badRequest().body("Wrong password");
+            return ResponseEntity.ok().body("Wrong password");
         }
 
     }
