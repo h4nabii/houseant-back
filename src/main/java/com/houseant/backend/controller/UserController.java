@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -40,6 +42,14 @@ public class UserController {
             @RequestBody Map<String, Object> params,
             HttpServletResponse response,
             HttpServletRequest request) {
+
+        String cookies;
+        if (request.getCookies() != null) {
+            cookies = Arrays.stream(request.getCookies())
+                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
+                    .collect(Collectors.joining(","));
+            logger.info(cookies);
+        }
 
         logger.info("Entering login model");
 
@@ -78,6 +88,13 @@ public class UserController {
             // Response data
             responseMsg.put("login", false);
             responseMsg.put("message", "Wrong password");
+        }
+
+        if (request.getCookies() != null) {
+            cookies = Arrays.stream(request.getCookies())
+                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
+                    .collect(Collectors.joining(","));
+            logger.info(cookies);
         }
 
         return ResponseEntity.ok().body(responseMsg);
