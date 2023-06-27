@@ -7,33 +7,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+
 @Service
 public class ReservationServiceImpl implements ReservationService {
-    private final ReservationDAO reservationDao;
+    private final ReservationDAO reservationDAO;
 
     @Autowired
-    public ReservationServiceImpl(ReservationDAO reservationDao) {
-        this.reservationDao = reservationDao;
+    public ReservationServiceImpl(ReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
     }
+
     @Override
     public List<Reservation> findAll() {
-        return reservationDao.findAll();
+        return reservationDAO.findAll();
     }
+
     @Override
-    public List<Reservation> findByKey(Map<String, Object> params) {
-        return reservationDao.findByKey(params);
+    public List<Reservation> findByAccount(String account) {
+        return reservationDAO.findByAccount(account);
     }
+
     @Override
     public void insert(Reservation reservation) {
-        reservationDao.insert(reservation);
+        reservationDAO.insert(reservation);
     }
+
     @Override
     public void delete(Integer resId) {
-        reservationDao.delete(resId);
+        reservationDAO.delete(resId);
     }
+
     @Override
     public void update(Reservation reservation) {
-        reservationDao.update(reservation);
+        reservationDAO.update(reservation);
     }
 }

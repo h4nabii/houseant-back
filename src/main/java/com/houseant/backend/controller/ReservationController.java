@@ -1,4 +1,4 @@
-package com.example.backend.controller;
+package com.houseant.backend.controller;
 
 public class ReservationController {
 }
