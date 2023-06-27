@@ -1,4 +1,4 @@
-package com.example.backend.entity;
+package com.houseant.backend.entity;
 
 public class House {
     private int house_id;

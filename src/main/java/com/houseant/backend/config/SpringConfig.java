@@ -1,4 +1,4 @@
-package com.example.backend.config;
+package com.houseant.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MyConfiguration {
+public class SpringConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.example.backend.dao.UserDao">
+<mapper namespace="com.houseant.backend.dao.UserDAO">
 
-    <select id="findAll" resultType="com.example.backend.entity.User">
+    <select id="findAll" resultType="com.houseant.backend.entity.User">
         SELECT *
         FROM user
     </select>
 
-    <select id="findByAccount" parameterType="java.lang.String" resultType="com.example.backend.entity.User">
+    <select id="findByAccount" parameterType="java.lang.String" resultType="com.houseant.backend.entity.User">
         SELECT *
         FROM user
-        WHERE account =#{account}
+        WHERE account = #{account}
     </select>
 
 
-    <select id="findByKey" parameterType="java.util.Map" resultType="com.example.backend.entity.User">
+    <select id="findByKey" parameterType="java.util.Map" resultType="com.houseant.backend.entity.User">
         SELECT *
         FROM user
         WHERE ${column} = #{value}
     </select>
 
-    <insert id="insert" parameterType="com.example.backend.entity.User">
+    <insert id="insert" parameterType="com.houseant.backend.entity.User">
         INSERT INTO user (username, password, tel, account, avatar)
         VALUES (#{username}, #{password}, #{tel}, #{account}, #{avatar})
     </insert>
@@ -32,7 +32,7 @@
         WHERE user_id = #{userId}
     </delete>
 
-    <update id="update" parameterType="com.example.backend.entity.User">
+    <update id="update" parameterType="com.houseant.backend.entity.User">
         UPDATE user
         SET username=#{username},
             password=#{password},

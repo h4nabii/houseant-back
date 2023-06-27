@@ -1,4 +1,4 @@
-package com.example.backend.entity;
+package com.houseant.backend.entity;
 
 public class Reservation {
     private int res_id;

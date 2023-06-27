@@ -1,11 +1,7 @@
-package com.example.backend.entity;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+package com.houseant.backend.entity;
 
 public class User {
-    private int user_id;
+    private int id;
     private String account;
     private String username;
     private String password;
@@ -13,8 +9,8 @@ public class User {
     private Boolean status;
     private String avatar;
 
-    public User(int user_id, String account, String username, String password, String tel, Boolean status, String avatar) {
-        this.user_id = user_id;
+    public User(int id, String account, String username, String password, String tel, Boolean status, String avatar) {
+        this.id = id;
         this.account = account;
         this.username = username;
         this.password = password;
@@ -23,8 +19,8 @@ public class User {
         this.avatar = avatar;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getId() {
+        return id;
     }
 
     public String getAccount() {
@@ -51,8 +47,8 @@ public class User {
         return avatar;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setAccount(String account) {
@@ -82,7 +78,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + user_id +
+                "user_id=" + id +
                 ", account='" + account + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
