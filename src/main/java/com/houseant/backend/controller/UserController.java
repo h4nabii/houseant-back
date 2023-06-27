@@ -43,14 +43,6 @@ public class UserController {
             HttpServletResponse response,
             HttpServletRequest request) {
 
-        String cookies;
-        if (request.getCookies() != null) {
-            cookies = Arrays.stream(request.getCookies())
-                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-                    .collect(Collectors.joining(","));
-            logger.info(cookies);
-        }
-
         logger.info("Entering login model");
 
         var responseMsg = new HashMap<String, Object>();
@@ -70,6 +62,8 @@ public class UserController {
             // Create a cookie
             Cookie cookie = new Cookie("user", user.getUsername());
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+            cookie.setDomain("localhost");
+            cookie.setPath("/");
             response.addCookie(cookie);
 
             // Create a session
@@ -88,13 +82,6 @@ public class UserController {
             // Response data
             responseMsg.put("login", false);
             responseMsg.put("message", "Wrong password");
-        }
-
-        if (request.getCookies() != null) {
-            cookies = Arrays.stream(request.getCookies())
-                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-                    .collect(Collectors.joining(","));
-            logger.info(cookies);
         }
 
         return ResponseEntity.ok().body(responseMsg);
@@ -131,5 +118,20 @@ public class UserController {
         userService.create(newUser);
         logger.info("User registered successfully");
         return ResponseEntity.ok().body("User registered successfully");
+    }
+
+    @GetMapping("/cookies")
+    public String getCookies(HttpServletRequest request) {
+        String cookies = null;
+        var cookiesArr = request.getCookies();
+        if (cookiesArr != null) {
+            cookies = Arrays.stream(cookiesArr)
+                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
+                    .collect(Collectors.joining(","));
+            logger.info("Cookies: " + cookies);
+        } else {
+            cookies = "No cookies";
+        }
+        return "Cookies: " + cookies;
     }
 }
