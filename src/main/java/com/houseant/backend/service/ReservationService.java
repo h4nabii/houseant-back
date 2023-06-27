@@ -7,12 +7,8 @@ import java.util.Map;
 
 public interface ReservationService {
     List<Reservation> findAll();
-
-    List<Reservation> findByKey(Map<String, Object> params);
-
+    List<Reservation> findByAccount(String account);
     void insert(Reservation reservation);
-
     void delete(Integer res_id);
-
     void update(Reservation reservation);
 }

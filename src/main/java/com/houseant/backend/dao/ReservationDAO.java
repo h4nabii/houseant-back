@@ -9,13 +9,9 @@ import java.util.Map;
 @Mapper
 public interface ReservationDAO {
     List<Reservation> findAll();
-
-    List<Reservation> findByKey(Map<String, Object> params);
-
+    List<Reservation> findByAccount(String name);
     void insert(Reservation reservation);
-
     void delete(Integer res_id);
-
     void update(Reservation reservation);
 
 }

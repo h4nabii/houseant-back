@@ -17,30 +17,26 @@
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
-    <select id="findByKey" resultMap="ReservationResultMap">
-        SELECT *
-        FROM reservation
-        WHERE res_id = #{id}
+    <select id="findByAccount" resultMap="ReservationResultMap">
+        SELECT * FROM reservation WHERE account = #{account}
     </select>
 
-    <insert id="insert" parameterType="com.houseant.backend.entity.Reservation">
+    <insert id="insert" parameterType="com.example.backend.entity.Reservation">
         INSERT INTO reservation (account, time, type, content)
         VALUES (#{account}, #{time}, #{type}, #{content})
     </insert>
 
     <delete id="delete">
-        DELETE
-        FROM reservation
-        WHERE res_id = #{res_id}
+        DELETE FROM reservation WHERE res_id = #{res_id}
     </delete>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
-    <update id="update" parameterType="com.houseant.backend.entity.Reservation">
-        UPDATE reservation
-        SET account = #{account},
-            time    = #{time},
-            type    = #{type},
-            content = #{content}
+    <update id="update" parameterType="com.example.backend.entity.Reservation">
+        UPDATE reservation SET
+                               account = #{account},
+                               time = #{time},
+                               type = #{type},
+                               content = #{content}
         WHERE res_id = #{res_id}
     </update>
 </mapper>
