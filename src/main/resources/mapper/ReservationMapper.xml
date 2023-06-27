@@ -16,8 +16,8 @@
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
-    <select id="findByKey" resultMap="ReservationResultMap">
-        SELECT * FROM reservation WHERE res_id = #{id}
+    <select id="findByAccount" resultMap="ReservationResultMap">
+        SELECT * FROM reservation WHERE account = #{account}
     </select>
 
     <insert id="insert" parameterType="com.example.backend.entity.Reservation">

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 @Service
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationDao reservationDao;
@@ -19,10 +18,8 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> findAll() {
         return reservationDao.findAll();
     }
-    @Override
-    public List<Reservation> findByKey(Map<String, Object> params) {
-        return reservationDao.findByKey(params);
-    }
+
+    public List<Reservation> findByAccount(String name){ return reservationDao.findByAccount(name);}
     @Override
     public void insert(Reservation reservation) {
         reservationDao.insert(reservation);
