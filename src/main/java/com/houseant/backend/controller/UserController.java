@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://localhost:5173")
 @RestController
+//@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
@@ -31,10 +32,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.findAll();
-    }
 
     @ResponseBody
     @PostMapping("/login")
@@ -49,6 +46,8 @@ public class UserController {
                     .map(cookie -> cookie.getName() + "=" + cookie.getValue())
                     .collect(Collectors.joining(","));
             logger.info(cookies);
+
+            logger.info("get cookies");
         }
 
         logger.info("Entering login model");
@@ -68,8 +67,10 @@ public class UserController {
 
         } else if (user.getPassword().equals(passwordGet)) {
             // Create a cookie
-            Cookie cookie = new Cookie("user", user.getUsername());
+            Cookie cookie = new Cookie("user", user.getAccount());
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+            cookie.setPath("/");
+
             response.addCookie(cookie);
 
             // Create a session
@@ -131,5 +132,22 @@ public class UserController {
         userService.create(newUser);
         logger.info("User registered successfully");
         return ResponseEntity.ok().body("User registered successfully");
+    }
+    @GetMapping("/autologin")
+    public ResponseEntity<?> autologin(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            // If the user is logged in, return a successful response
+            return ResponseEntity.ok().body(Map.of(
+                    "login", true,
+                    "message", "Auto login successful"
+            ));
+        } else {
+            // If the user is not logged in, return a failed response
+            return ResponseEntity.ok().body(Map.of(
+                    "login", false,
+                    "message", "Auto login failed"
+            ));
+        }
     }
 }
