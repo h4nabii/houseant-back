@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-//@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequestMapping("/user")
 public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
@@ -32,6 +31,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.findAll();
+    }
 
     @ResponseBody
     @PostMapping("/login")
@@ -133,6 +136,22 @@ public class UserController {
         logger.info("User registered successfully");
         return ResponseEntity.ok().body("User registered successfully");
     }
+
+    @GetMapping("/cookies")
+    public String getCookies(HttpServletRequest request) {
+        String cookies = null;
+        var cookiesArr = request.getCookies();
+        if (cookiesArr != null) {
+            cookies = Arrays.stream(cookiesArr)
+                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
+                    .collect(Collectors.joining(","));
+            logger.info("Cookies: " + cookies);
+        } else {
+            cookies = "No cookies";
+        }
+        return "Cookies: " + cookies;
+    }
+
     @GetMapping("/autologin")
     public ResponseEntity<?> autologin(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");

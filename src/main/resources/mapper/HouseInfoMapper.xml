@@ -20,12 +20,12 @@
 
     <select id="findAll" resultMap="HouseResultMap">
         SELECT *
-        FROM house
+        FROM housesrc
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
-        SELECT * FROM house
+        SELECT * FROM housesrc
         <where>
             <if test="name != null">
                 name = #{name}
@@ -61,7 +61,7 @@
     </select>
 
     <insert id="insert" parameterType="com.houseant.backend.entity.House">
-        INSERT INTO house (name, address, direction, area, layout, price, picture, developer, floor, has_elevator,
+        INSERT INTO housesrc (name, address, direction, area, layout, price, picture, developer, floor, has_elevator,
                            build_time)
         VALUES (#{name}, #{address}, #{direction}, #{area}, #{layout}, #{price}, #{picture}, #{developer}, #{floor},
                 #{has_elevator}, #{build_time})
@@ -69,13 +69,13 @@
 
     <delete id="delete">
         DELETE
-        FROM house
+        FROM housesrc
         WHERE house_id = #{id}
     </delete>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
     <update id="update" parameterType="com.houseant.backend.entity.House">
-        UPDATE house
+        UPDATE housesrc
         SET name         = #{name},
             address      = #{address},
             direction    = #{direction},
