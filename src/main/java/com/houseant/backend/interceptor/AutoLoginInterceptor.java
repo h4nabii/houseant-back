@@ -34,8 +34,9 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("user".equals(cookie.getName())) {
-                    String token_passwd = cookie.getValue();
-                    String token_account = cookie.getValue();
+
+                    String token_account = tokenService.getAccountFromToken(cookie.getValue());
+                    String token_passwd = tokenService.getPasswdFromToken(cookie.getValue());
 
                     // Validate the token
                     if (tokenService.validateToken(token_passwd)) {
@@ -46,9 +47,6 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                         if (user != null) {
                             // Set the user in the session
                             request.getSession().setAttribute("user", user);
-                            Map<String, Object> responseMsg = new HashMap<>();
-                            responseMsg.put("login", true);
-                            responseMsg.put("message", "login by cookie");
                             logger.info("auto login success");
                             return true;
                         }
