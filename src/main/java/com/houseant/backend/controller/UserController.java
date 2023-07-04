@@ -1,5 +1,6 @@
 package com.houseant.backend.controller;
 
+import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
@@ -20,9 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+
 /**
  * 处理客户端发来的有关用户信息的请求
  */
+
+
+
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -45,6 +52,7 @@ public class UserController {
      * @return 返回登录结果的Map，自动转换为JSON格式的字符串
      */
     @ResponseBody
+    @NoLogin
     @PostMapping("/login")
     public ResponseEntity<?> login(
             @RequestBody Map<String, Object> params,
@@ -168,28 +176,6 @@ public class UserController {
         return "Cookies: " + cookies;
     }
 
-    @GetMapping("/autologin")
-    public ResponseEntity<?> autologin(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
 
-        if (user != null) {
-            // If the user is logged in, return a successful response
-            var responseMsg = new HashMap<String, Object>();
-
-            responseMsg.put("login", true);
-            responseMsg.put("message", "Auto login successful");
-            responseMsg.put("userMsg", user.getUserMsgExceptPasswd());
-
-            return ResponseEntity.ok().body(responseMsg);
-        } else {
-            // If the user is not logged in, return a failed response
-            return ResponseEntity.ok().body(Map.of(
-                    "login", false,
-                    "message", "Auto login failed"));
-        }
-    }
-
-    //1.查看所有房源
-    //  HouseService  -->  findByKey
 
 }
