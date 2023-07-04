@@ -89,6 +89,7 @@ public class UserController {
             // Response data
             responseMsg.put("login", true);
             responseMsg.put("message", "Login succeed");
+            responseMsg.put("userMsg", user.getUserMsgExceptPasswd());
 
         } else {
             logger.warn(user);
@@ -160,12 +161,16 @@ public class UserController {
     @GetMapping("/autologin")
     public ResponseEntity<?> autologin(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
+
         if (user != null) {
             // If the user is logged in, return a successful response
-            return ResponseEntity.ok().body(Map.of(
-                    "login", true,
-                    "message", "Auto login successful"
-            ));
+            var responseMsg = new HashMap<String, Object>();
+
+            responseMsg.put("login", true);
+            responseMsg.put("message", "Auto login successful");
+            responseMsg.put("userMsg",user.getUserMsgExceptPasswd());
+
+            return ResponseEntity.ok().body(responseMsg);
         } else {
             // If the user is not logged in, return a failed response
             return ResponseEntity.ok().body(Map.of(
@@ -174,4 +179,6 @@ public class UserController {
             ));
         }
     }
+
+
 }

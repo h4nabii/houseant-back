@@ -1,5 +1,7 @@
 package com.houseant.backend.entity;
 
+import java.util.Map;
+
 public class User {
     private int id;
     private String account;
@@ -86,6 +88,15 @@ public class User {
                 ", status=" + status +
                 ", avatar='" + avatar + '\'' +
                 '}';
+    }
+    public Map getUserMsgExceptPasswd()
+    {
+        return Map.of(
+                "account",getAccount(),
+                "username",getAccount(),
+                "tel",getTel(),
+                "status",getStatus()
+        );
     }
 }
 
