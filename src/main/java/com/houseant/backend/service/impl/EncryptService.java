@@ -12,18 +12,18 @@ public class EncryptService {
     public String encrypt(String originalString) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedhash);
+            byte[] encodedHash = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(encodedHash);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static String bytesToHex(byte[] hash) {
-        StringBuffer hexString = new StringBuffer();
-        for (int i = 0; i < hash.length; i++) {
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1) hexString.append('0');
+    private static String bytesToHex(byte[] hashes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte hash : hashes) {
+            String hex = Integer.toHexString(0xff & hash);
+            if (hex.length() == 1) hexString.append('0');
             hexString.append(hex);
         }
         return hexString.toString();

@@ -9,15 +9,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    private String key;
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final EncryptService encryptService;
+
+    private static final String cookieName = "user";
+    private static final String splitChar = "%";
 
     @Autowired
-    private EncryptService encryptService;
+    public TokenServiceImpl(UserService userService, EncryptService encryptService) {
+        this.userService = userService;
+        this.encryptService = encryptService;
+    }
+
     @Override
     public boolean validateToken(String token) {
-        String[] parts = token.split("%");
+        String[] parts = token.split(splitChar);
         if (parts.length != 2) {
             return false;
         }
@@ -38,25 +44,20 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public Cookie createToken(User user) {
-        String passwd=user.getPassword();
-        String account=user.getAccount();
-        String encodePW=encryptService.encrypt(passwd);
-        String cookieMsg=account+"%"+encodePW;
-        Cookie newcookie=new Cookie("user",cookieMsg);
-        return newcookie;
+        return new Cookie(
+                cookieName,
+                user.getPassword() + splitChar + encryptService.encrypt(user.getAccount())
+        );
 
     }
 
     @Override
     public String getAccountFromToken(String token) {
-        String[] tokenMsg= token.split("%");
-        return  tokenMsg[0];
-
+        return token.split(splitChar)[0];
     }
 
     @Override
     public String getPasswdFromToken(String token) {
-        String[] tokenMsg= token.split("%");
-        return  tokenMsg[1];
+        return token.split(splitChar)[1];
     }
 }
