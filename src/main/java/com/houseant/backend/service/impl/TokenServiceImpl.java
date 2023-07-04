@@ -46,7 +46,7 @@ public class TokenServiceImpl implements TokenService {
     public Cookie createToken(User user) {
         return new Cookie(
                 cookieName,
-                user.getPassword() + splitChar + encryptService.encrypt(user.getAccount())
+                user.getAccount() + splitChar + encryptService.encrypt(user.getPassword())
         );
 
     }
