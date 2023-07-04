@@ -178,17 +178,18 @@ public class UserController {
 
             responseMsg.put("login", true);
             responseMsg.put("message", "Auto login successful");
-            responseMsg.put("userMsg",user.getUserMsgExceptPasswd());
+            responseMsg.put("userMsg", user.getUserMsgExceptPasswd());
 
             return ResponseEntity.ok().body(responseMsg);
         } else {
             // If the user is not logged in, return a failed response
             return ResponseEntity.ok().body(Map.of(
                     "login", false,
-                    "message", "Auto login failed"
-            ));
+                    "message", "Auto login failed"));
         }
     }
 
+    //1.查看所有房源
+    //  HouseService  -->  findByKey
 
 }
