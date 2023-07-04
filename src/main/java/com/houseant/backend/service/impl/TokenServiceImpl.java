@@ -17,7 +17,7 @@ public class TokenServiceImpl implements TokenService {
     private EncryptService encryptService;
     @Override
     public boolean validateToken(String token) {
-        String[] parts = token.split(",");
+        String[] parts = token.split("%");
         if (parts.length != 2) {
             return false;
         }
@@ -41,7 +41,7 @@ public class TokenServiceImpl implements TokenService {
         String passwd=user.getPassword();
         String account=user.getAccount();
         String encodePW=encryptService.encrypt(passwd);
-        String cookieMsg=account+","+encodePW;
+        String cookieMsg=account+"%"+encodePW;
         Cookie newcookie=new Cookie("user",cookieMsg);
         return newcookie;
 
@@ -49,14 +49,14 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public String getAccountFromToken(String token) {
-        String[] tokenMsg= token.split(",");
+        String[] tokenMsg= token.split("%");
         return  tokenMsg[0];
 
     }
 
     @Override
     public String getPasswdFromToken(String token) {
-        String[] tokenMsg= token.split(",");
+        String[] tokenMsg= token.split("%");
         return  tokenMsg[1];
     }
 }

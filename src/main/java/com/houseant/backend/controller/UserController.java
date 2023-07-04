@@ -78,7 +78,7 @@ public class UserController {
             Cookie cookie = tokenService.createToken(user);
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
             cookie.setPath("/");
-
+            logger.info(cookie.getValue());
             response.addCookie(cookie);
 
             // Create a session

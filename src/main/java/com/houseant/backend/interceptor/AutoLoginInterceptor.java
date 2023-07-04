@@ -39,7 +39,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                     String token_passwd = tokenService.getPasswdFromToken(cookie.getValue());
 
                     // Validate the token
-                    if (tokenService.validateToken(token_passwd)) {
+                    if (tokenService.validateToken(cookie.getValue())) {
                         // If the token is valid, get the user information from the token
 
                         User user = userService.findByAccount(token_account);
