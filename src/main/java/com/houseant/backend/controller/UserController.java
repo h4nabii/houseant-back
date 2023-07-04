@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//@CrossOrigin(origins = "http://localhost:5173")
+/**
+ * 处理客户端发来的有关用户信息的请求
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -35,11 +37,13 @@ public class UserController {
         this.tokenService=tokenService;
     }
 
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.findAll();
-    }
-
+    /**
+     * 响应登录请求的函数
+     * @param params 登录请求请求体，内含登录账号与密码。
+     * @param response 登录响应
+     * @param request 登录请求
+     * @return 返回登录结果的Map，自动转换为JSON格式的字符串
+     */
     @ResponseBody
     @PostMapping("/login")
     public ResponseEntity<?> login(
@@ -110,6 +114,12 @@ public class UserController {
         return ResponseEntity.ok().body(responseMsg);
     }
 
+    /**
+     * 响应退出登录的请求
+     * @param response 登出响应
+     * @param request 登出请求
+     * @return 响应体
+     */
     @GetMapping("/logout")
     public ResponseEntity<?> logout(
             HttpServletResponse response,
