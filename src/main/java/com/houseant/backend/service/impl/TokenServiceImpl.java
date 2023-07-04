@@ -17,8 +17,24 @@ public class TokenServiceImpl implements TokenService {
     private EncryptService encryptService;
     @Override
     public boolean validateToken(String token) {
-        return true;
+        String[] parts = token.split(",");
+        if (parts.length != 2) {
+            return false;
+        }
+
+        String account = parts[0];
+        String encryptedPassword = parts[1];
+
+        User user = userService.findByAccount(account);
+        if (user == null) {
+            return false;
+        }
+
+        String actualEncryptedPassword = encryptService.encrypt(user.getPassword());
+
+        return encryptedPassword.equals(actualEncryptedPassword);
     }
+
 
     @Override
     public Cookie createToken(User user) {

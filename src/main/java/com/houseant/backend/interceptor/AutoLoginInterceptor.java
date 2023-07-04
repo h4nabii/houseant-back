@@ -42,14 +42,10 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                     if (tokenService.validateToken(token_passwd)) {
                         // If the token is valid, get the user information from the token
 
-                        String account = tokenService.getAccountFromToken(token_account);
-                        User user = userService.findByAccount(account);
-                        if (user != null) {
-                            // Set the user in the session
-                            request.getSession().setAttribute("user", user);
-                            logger.info("auto login success");
-                            return true;
-                        }
+                        User user = userService.findByAccount(token_account);
+                        request.getSession().setAttribute("user", user);
+                        logger.info("auto login success");
+                        return true;
                     }
                 }
             }

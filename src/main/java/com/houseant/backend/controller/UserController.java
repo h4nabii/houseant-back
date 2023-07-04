@@ -1,7 +1,9 @@
 package com.houseant.backend.controller;
 
 import com.houseant.backend.entity.User;
+import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
+import com.houseant.backend.service.impl.EncryptService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,10 +27,12 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
     private final UserService userService;
+    private  final TokenService tokenService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService ,TokenService tokenService) {
         this.userService = userService;
+        this.tokenService=tokenService;
     }
 
     @GetMapping("/users")
@@ -70,7 +74,8 @@ public class UserController {
 
         } else if (user.getPassword().equals(passwordGet)) {
             // Create a cookie
-            Cookie cookie = new Cookie("user", user.getAccount());
+
+            Cookie cookie = tokenService.createToken(user);
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
             cookie.setPath("/");
 
