@@ -144,7 +144,7 @@ public class UserController {
         logger.info("Logout succeed");
         return ResponseEntity.ok().body("Logout success");
     }
-
+    @NoLogin
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User newUser) {
         Logger logger = LogManager.getLogger(UserController.class);
