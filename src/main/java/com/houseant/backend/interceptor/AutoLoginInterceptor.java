@@ -35,6 +35,21 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull Object handler) {
+        logger.info("Enter LoginInterceptor Modules");
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (tokenService.validateCookie(cookie)) {
+                    String account = tokenService.getAccountFromCookie(cookie);
+
+                    User user = userService.findByAccount(account);
+                    request.getSession().setAttribute("user", user);
+                    logger.info("auto login success");
+                    return true;
+                }
+            }
+        }
         logger.info(handler.getClass());
         // Check if the request handler is a method
         if (handler instanceof HandlerMethod) {
@@ -51,21 +66,9 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             return true; // if you want to ignore/skip it
         }
 
-        logger.info("Enter LoginInterceptor Modules");
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (tokenService.validateCookie(cookie)) {
-                    String account = tokenService.getAccountFromCookie(cookie);
 
-                    User user = userService.findByAccount(account);
-                    request.getSession().setAttribute("user", user);
-                    logger.info("auto login success");
-                    return true;
-                }
-            }
-        }
+
 
         response.setStatus(401);
         logger.error("user need to login");
