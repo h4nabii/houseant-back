@@ -25,7 +25,7 @@
     <select id="findById" resultMap="ReservationResultMap">
         SELECT *
         FROM reservation
-        WHERE id = #{id}
+        WHERE res_id = #{id}
     </select>
 
 

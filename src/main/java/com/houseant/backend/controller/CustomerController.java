@@ -1,5 +1,6 @@
 package com.houseant.backend.controller;
 
+import com.houseant.backend.entity.House;
 import com.houseant.backend.entity.Reservation;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.HouseService;
@@ -37,7 +38,7 @@ public class CustomerController {
     }
     //2.查看预约
     //  ReservationService  -->  findByAccount
-    @PostMapping("/findByAccount")
+    @GetMapping("/findByAccount")
     public ResponseEntity<?>findByAccount(
             @NonNull HttpServletRequest request){
         String msg;
@@ -74,5 +75,12 @@ public class CustomerController {
         }
 
 
+    }
+    @PostMapping("/updateReservationInfo")
+    public ResponseEntity<?>updateHouseInfo (@RequestBody Reservation newReservation, @NonNull HttpServletRequest request){
+        newReservation.setAccount(((User)request.getSession().getAttribute("user")).getAccount());
+        reservationService.update(newReservation);
+        //logger.info("successfully update a house info");
+        return ResponseEntity.ok().body("successfully update a reservation info");
     }
 }
