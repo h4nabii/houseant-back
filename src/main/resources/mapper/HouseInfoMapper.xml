@@ -27,7 +27,6 @@
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-                account=#{account}
             <if test="name != null">
                 name = #{name}
             </if>

@@ -15,4 +15,13 @@ public interface HouseService {
     void delete(Integer house_id);
 
     void update(House house);
+
+
+}
+
+class HouseUpdater {
+    public HouseUpdater(House house) {
+
+    }
+
 }
