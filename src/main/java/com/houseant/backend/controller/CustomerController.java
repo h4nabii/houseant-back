@@ -1,16 +1,11 @@
 package com.houseant.backend.controller;
 
-import com.houseant.backend.entity.House;
 import com.houseant.backend.entity.Reservation;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.HouseService;
 import com.houseant.backend.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +33,7 @@ public class CustomerController {
         reservation.setAccount(((User)(request.getSession().getAttribute("user"))).getAccount());
         reservationService.create(reservation);
         msg = "addReservation Successfully";
-        return ResponseEntity.ok(Map.of("message", msg));
+        return ResponseEntity.ok().body(Map.of("message", msg));
     }
     //2.查看预约
     //  ReservationService  -->  findByAccount
@@ -48,7 +43,7 @@ public class CustomerController {
         String msg;
         List<Reservation> res = reservationService.findByAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
         msg = "findByAccount Successfully";
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity.ok().body(Map.of(
                         "result",res,
                         "message",msg
                 ));
@@ -62,6 +57,22 @@ public class CustomerController {
         String msg;
         houseService.findByKey(params);
         msg = "findByKey Successfully";
-        return ResponseEntity.ok(Map.of("message",msg));
+        return ResponseEntity.ok().body(Map.of("message",msg));
+    }
+    @DeleteMapping("deleteReservation")
+    public ResponseEntity<?>deleteReservation(@RequestParam int id,@NonNull HttpServletRequest request){
+        String msg;
+        Reservation res = (reservationService.findById(id));
+        if(res.getAccount().equals(((User) (request.getSession().getAttribute("user"))).getAccount())){
+            reservationService.delete(id);
+            msg = "Delete successfully";
+            return ResponseEntity.ok().body(Map.of("message",msg));
+        }
+        else{
+            msg="Records not found, check your account or insert a new reservation";
+            return ResponseEntity.ok().body(Map.of("message",msg));
+        }
+
+
     }
 }
