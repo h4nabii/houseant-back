@@ -17,4 +17,5 @@ public interface ReservationDAO {
 
     void update(Reservation reservation);
 
+    Reservation findById(int id);
 }
