@@ -23,8 +23,23 @@ public class House {
         this.account = account;
     }
 
-    public House(int house_id, String name, String address, String direction, String area, String layout, float price, String picture, String developer, int floor, boolean has_elevator, String build_time) {
+    public House(
+            int house_id,
+            String account,
+            String name,
+            String address,
+            float price,
+            String area,
+            String picture,
+            int floor,
+            String direction,
+            String layout,
+            String developer,
+            String build_time,
+            boolean has_elevator
+    ) {
         this.house_id = house_id;
+        this.account = account;
         this.name = name;
         this.address = address;
         this.direction = direction;
