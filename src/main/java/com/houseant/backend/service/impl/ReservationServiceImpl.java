@@ -26,6 +26,8 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> findByAccount(String account) {
         return reservationDAO.findByAccount(account);
     }
+    @Override
+    public  void create(Reservation reservation){reservationDAO.insert(reservation);}
 
     @Override
     public void insert(Reservation reservation) {
