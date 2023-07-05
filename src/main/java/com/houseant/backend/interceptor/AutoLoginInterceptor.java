@@ -1,5 +1,6 @@
 package com.houseant.backend.interceptor;
 
+import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
@@ -32,6 +34,17 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull Object handler) {
+        // Check if the request handler is a method
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            // Check if the method has the SkipLoginCheck annotation
+            NoLogin ifSkipLoginCheck = handlerMethod.getMethodAnnotation(NoLogin.class);
+            if (ifSkipLoginCheck != null) {
+                // Skip this request
+                return true;
+            }
+        }
+
 
         logger.info("Enter LoginInterceptor Modules");
 
@@ -55,6 +68,9 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                 }
             }
         }
-        return true;
+
+        response.setStatus(401);
+        logger.error("user need to login");
+        return false;
     }
 }
