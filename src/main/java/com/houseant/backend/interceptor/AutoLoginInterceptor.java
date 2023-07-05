@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -34,6 +35,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull Object handler) {
+        logger.info(handler.getClass());
         // Check if the request handler is a method
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -43,6 +45,10 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                 // Skip this request
                 return true;
             }
+        }
+        else if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+            // This is a CORS preflight request. Handle it accordingly.
+            return true; // if you want to ignore/skip it
         }
 
         logger.info("Enter LoginInterceptor Modules");

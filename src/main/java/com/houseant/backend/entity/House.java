@@ -13,6 +13,15 @@ public class House {
     private int floor;
     private boolean has_elevator;
     private String build_time;
+    private String account;
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
     public House(int house_id, String name, String address, String direction, String area, String layout, float price, String picture, String developer, int floor, boolean has_elevator, String build_time) {
         this.house_id = house_id;

@@ -27,6 +27,7 @@
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
+                account=#{account}
             <if test="name != null">
                 name = #{name}
             </if>
@@ -62,9 +63,9 @@
 
     <insert id="insert" parameterType="com.houseant.backend.entity.House">
         INSERT INTO housesrc (name, address, direction, area, layout, price, picture, developer, floor, has_elevator,
-                           build_time)
+                           build_time,account)
         VALUES (#{name}, #{address}, #{direction}, #{area}, #{layout}, #{price}, #{picture}, #{developer}, #{floor},
-                #{has_elevator}, #{build_time})
+                #{has_elevator}, #{build_time}),#{account}
     </insert>
 
     <delete id="delete">
