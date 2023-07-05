@@ -22,6 +22,12 @@
         FROM reservation
         WHERE account = #{account}
     </select>
+    <select id="findById" resultMap="ReservationResultMap">
+        SELECT *
+        FROM reservation
+        WHERE id = #{id}
+    </select>
+
 
     <insert id="insert" parameterType="com.houseant.backend.entity.Reservation">
         INSERT INTO reservation (account, time, type, content)
