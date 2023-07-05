@@ -45,26 +45,18 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             }
         }
 
-
         logger.info("Enter LoginInterceptor Modules");
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("user".equals(cookie.getName())) {
+                if (tokenService.validateCookie(cookie)) {
+                    String account = tokenService.getAccountFromCookie(cookie);
 
-                    String token_account = tokenService.getAccountFromToken(cookie.getValue());
-                    String token_passwd = tokenService.getPasswdFromToken(cookie.getValue());
-
-                    // Validate the token
-                    if (tokenService.validateToken(cookie.getValue())) {
-                        // If the token is valid, get the user information from the token
-
-                        User user = userService.findByAccount(token_account);
-                        request.getSession().setAttribute("user", user);
-                        logger.info("auto login success");
-                        return true;
-                    }
+                    User user = userService.findByAccount(account);
+                    request.getSession().setAttribute("user", user);
+                    logger.info("auto login success");
+                    return true;
                 }
             }
         }

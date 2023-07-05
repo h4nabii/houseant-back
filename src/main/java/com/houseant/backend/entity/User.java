@@ -89,7 +89,7 @@ public class User {
                 ", avatar='" + avatar + '\'' +
                 '}';
     }
-    public Map getUserMsgExceptPasswd()
+    public Map<String, Object> getUserMsgExceptPasswd()
     {
         return Map.of(
                 "account",getAccount(),
