@@ -3,7 +3,6 @@ package com.houseant.backend.controller;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
-import com.houseant.backend.service.impl.EncryptService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,12 +27,12 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
     private final UserService userService;
-    private  final TokenService tokenService;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserController(UserService userService ,TokenService tokenService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
-        this.tokenService=tokenService;
+        this.tokenService = tokenService;
     }
 
     /**
@@ -114,12 +112,6 @@ public class UserController {
         return ResponseEntity.ok().body(responseMsg);
     }
 
-    /**
-     * 响应退出登录的请求
-     * @param response 登出响应
-     * @param request 登出请求
-     * @return 响应体
-     */
     @GetMapping("/logout")
     public ResponseEntity<?> logout(
             HttpServletResponse response,
@@ -138,19 +130,29 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User newUser) {
-        Logger logger = LogManager.getLogger(UserController.class);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        boolean success;
+        String msg;
+
         // Check if account is already used
-        User existingUser = userService.findByAccount(newUser.getAccount());
-        if (existingUser != null) {
-            logger.warn("Account already exists");
-            return ResponseEntity.badRequest().body("Account already exists");
+        if (userService.isAccountAvailable(user.getAccount())) {
+            // Default settings
+            user.setUsername(user.getAccount());
+            user.setTel("");
+            user.setAvatar("");
+            userService.create(user);
+
+            msg = "User registered successfully";
+            success = true;
+        } else {
+            msg = "Account already exists";
+            success = false;
         }
 
-        // TODO: You may want to encrypt the password before saving it to the database
-        userService.create(newUser);
-        logger.info("User registered successfully");
-        return ResponseEntity.ok().body("User registered successfully");
+        return ResponseEntity.ok(Map.of(
+                "success", success,
+                "message", msg
+        ));
     }
 
     @GetMapping("/cookies")
@@ -178,7 +180,7 @@ public class UserController {
 
             responseMsg.put("login", true);
             responseMsg.put("message", "Auto login successful");
-            responseMsg.put("userMsg",user.getUserMsgExceptPasswd());
+            responseMsg.put("userMsg", user.getUserMsgExceptPasswd());
 
             return ResponseEntity.ok().body(responseMsg);
         } else {

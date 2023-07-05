@@ -17,4 +17,8 @@ public interface UserService {
     void update(User user);
 
     User findByAccount(String account);
+
+    String generateAccount();
+
+    boolean isAccountAvailable(String Account);
 }
