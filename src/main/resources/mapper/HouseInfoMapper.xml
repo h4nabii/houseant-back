@@ -27,9 +27,9 @@
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-                account=#{account}
+            account=#{account}
             <if test="name != null">
-                name = #{name}
+                AND name = #{name}
             </if>
             <if test="address != null">
                 AND address = #{address}

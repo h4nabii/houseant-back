@@ -66,8 +66,9 @@ public class HouseOwnerController {
 
     //4.查看我的房源
     //  HouseService -->  findByKey 筛选本人的房源
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<?> search( @NonNull @RequestBody Map<String, Object> params,@NonNull HttpServletRequest request) {
+        logger.info("sdgfsgf123");
         String account_get=((User) request.getSession().getAttribute("user")).getAccount();
         params.put("account",account_get);
         List<House> houseList=houseService.findByKey(params);
