@@ -19,10 +19,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class AutoLoginInterceptor implements HandlerInterceptor {
 
-    private final TokenService tokenService;
-
-    private final UserService userService;
     private static final Logger logger = LogManager.getLogger("AutoLoginInterceptor");
+    private final TokenService tokenService;
+    private final UserService userService;
 
     @Autowired
     public AutoLoginInterceptor(TokenService tokenService, UserService userService) {
@@ -52,22 +51,17 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
         }
         logger.info(handler.getClass());
         // Check if the request handler is a method
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
+        if (handler instanceof HandlerMethod handlerMethod) {
             // Check if the method has the SkipLoginCheck annotation
             NoLogin ifSkipLoginCheck = handlerMethod.getMethodAnnotation(NoLogin.class);
             if (ifSkipLoginCheck != null) {
                 // Skip this request
                 return true;
             }
-        }
-        else if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+        } else if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
             // This is a CORS preflight request. Handle it accordingly.
             return true; // if you want to ignore/skip it
         }
-
-
-
 
 
         response.setStatus(401);

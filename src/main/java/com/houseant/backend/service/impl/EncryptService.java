@@ -9,16 +9,6 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class EncryptService {
 
-    public String encrypt(String originalString) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedHash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static String bytesToHex(byte[] hashes) {
         StringBuilder hexString = new StringBuilder();
         for (byte hash : hashes) {
@@ -27,5 +17,15 @@ public class EncryptService {
             hexString.append(hex);
         }
         return hexString.toString();
+    }
+
+    public String encrypt(String originalString) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(encodedHash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

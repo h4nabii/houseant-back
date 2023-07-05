@@ -62,9 +62,11 @@
     </select>
 
     <insert id="insert" parameterType="com.houseant.backend.entity.House">
-        INSERT INTO housesrc (account,name, address, direction, area, layout, price, picture, developer, floor, has_elevator,
-                           build_time)
-        VALUES (#{account},#{name}, #{address}, #{direction}, #{area}, #{layout}, #{price}, #{picture}, #{developer}, #{floor},
+        INSERT INTO housesrc (account, name, address, direction, area, layout, price, picture, developer, floor,
+                              has_elevator,
+                              build_time)
+        VALUES (#{account}, #{name}, #{address}, #{direction}, #{area}, #{layout}, #{price}, #{picture}, #{developer},
+                #{floor},
                 #{has_elevator}, #{build_time})
     </insert>
 

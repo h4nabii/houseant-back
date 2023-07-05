@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    private final UserService userService;
-    private final EncryptService encryptService;
-
     private static final String cookieName = "user";
     private static final String splitChar = "%";
+    private static final Integer cookieAge = 7 * 24 * 60 * 60; // 7 days
+    private final UserService userService;
+    private final EncryptService encryptService;
 
     @Autowired
     public TokenServiceImpl(UserService userService, EncryptService encryptService) {
@@ -41,10 +41,19 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public Cookie createTokenCookie(User user) {
-        return new Cookie(
-                cookieName,
-                user.getAccount() + splitChar + encryptService.encrypt(user.getPassword())
-        );
+        var cookie = new Cookie(cookieName,
+                user.getAccount() + splitChar + encryptService.encrypt(user.getPassword()));
+        cookie.setMaxAge(cookieAge);
+        cookie.setPath("/");
+        return cookie;
+    }
+
+    @Override
+    public Cookie createInvalidCookie() {
+        var cookie = new Cookie(cookieName, null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        return cookie;
     }
 
     @Override

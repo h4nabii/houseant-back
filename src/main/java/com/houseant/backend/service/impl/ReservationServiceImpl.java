@@ -28,10 +28,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation findById(int id) {return reservationDAO.findById(id);}
+    public Reservation findById(int id) {
+        return reservationDAO.findById(id);
+    }
 
     @Override
-    public  void create(Reservation reservation){reservationDAO.insert(reservation);}
+    public void create(Reservation reservation) {
+        reservationDAO.insert(reservation);
+    }
 
     @Override
     public void insert(Reservation reservation) {

@@ -15,14 +15,6 @@ public class House {
     private String build_time;
     private String account;
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
     public House(
             int house_id,
             String account,
@@ -51,6 +43,14 @@ public class House {
         this.floor = floor;
         this.has_elevator = has_elevator;
         this.build_time = build_time;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public int getHouse_id() {

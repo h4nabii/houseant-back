@@ -11,12 +11,13 @@ import java.util.Map;
 
 @Service
 public class HouseServiceImpl implements HouseService {
-     private  final HouseInfoDAO houseInfoDAO;
-     @Autowired
-     public  HouseServiceImpl(HouseInfoDAO houseInfoDAO)
-     {
-         this.houseInfoDAO=houseInfoDAO;
-     }
+    private final HouseInfoDAO houseInfoDAO;
+
+    @Autowired
+    public HouseServiceImpl(HouseInfoDAO houseInfoDAO) {
+        this.houseInfoDAO = houseInfoDAO;
+    }
+
     @Override
     public List<House> findAll() {
         return houseInfoDAO.findAll();
@@ -29,7 +30,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void insert(House house) {
-         houseInfoDAO.insert(house);
+        houseInfoDAO.insert(house);
 
     }
 

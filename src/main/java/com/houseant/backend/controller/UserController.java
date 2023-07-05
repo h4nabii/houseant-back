@@ -4,7 +4,6 @@ import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -70,12 +69,8 @@ public class UserController {
             login = true;
             userData = user.getUserMsgExceptPasswd();
 
-            // Create a cookie
-            Cookie cookie = tokenService.createTokenCookie(user);
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-            cookie.setPath("/");
-            logger.info(cookie.getValue());
-            response.addCookie(cookie);
+            // Add a cookie
+            response.addCookie(tokenService.createTokenCookie(user));
 
             // Create a session
             HttpSession session = request.getSession();
@@ -103,12 +98,15 @@ public class UserController {
         if (session != null) {
             session.invalidate();
         }
-        Cookie cookie = new Cookie("user", null); // overwrite with a null value
-        cookie.setMaxAge(0); // 0 means the cookie will be deleted immediately
-        response.addCookie(cookie);
+
+        // Add a cookie
+        response.addCookie(tokenService.createInvalidCookie());
 
         logger.info("Logout succeed");
-        return ResponseEntity.ok().body("Logout success");
+        return ResponseEntity.ok().body(Map.of(
+                "logout", true,
+                "message", "Logout succeed"
+        ));
     }
 
     @NoLogin
@@ -143,6 +141,7 @@ public class UserController {
         String msg;
         userService.update(user);
         msg = "updateUser successfully";
+        logger.info(msg);
         return ResponseEntity.ok().body(Map.of("message", msg));
     }
 

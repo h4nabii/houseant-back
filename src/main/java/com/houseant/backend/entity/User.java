@@ -3,7 +3,7 @@ package com.houseant.backend.entity;
 import java.util.Map;
 
 public class User {
-    private int id;
+    private int userId;
     private String account;
     private String username;
     private String password;
@@ -11,8 +11,8 @@ public class User {
     private Boolean status;
     private String avatar;
 
-    public User(int id, String account, String username, String password, String tel, Boolean status, String avatar) {
-        this.id = id;
+    public User(int userId, String account, String username, String password, String tel, Boolean status, String avatar) {
+        this.userId = userId;
         this.account = account;
         this.username = username;
         this.password = password;
@@ -21,56 +21,56 @@ public class User {
         this.avatar = avatar;
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getAccount() {
         return account;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTel() {
+        return tel;
     }
 
     public void setTel(String tel) {
         this.tel = tel;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     public void setAvatar(String avatar) {
@@ -80,7 +80,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + id +
+                "user_id=" + userId +
                 ", account='" + account + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
@@ -89,13 +89,13 @@ public class User {
                 ", avatar='" + avatar + '\'' +
                 '}';
     }
-    public Map<String, Object> getUserMsgExceptPasswd()
-    {
+
+    public Map<String, Object> getUserMsgExceptPasswd() {
         return Map.of(
-                "account",getAccount(),
-                "username",getAccount(),
-                "tel",getTel(),
-                "status",getStatus()
+                "account", getAccount(),
+                "username", getAccount(),
+                "tel", getTel(),
+                "status", getStatus()
         );
     }
 }

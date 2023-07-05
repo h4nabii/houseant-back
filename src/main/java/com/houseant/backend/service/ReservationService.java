@@ -8,7 +8,9 @@ public interface ReservationService {
     List<Reservation> findAll();
 
     List<Reservation> findByAccount(String account);
+
     Reservation findById(int id);
+
     void create(Reservation reservation);
 
     void insert(Reservation reservation);
