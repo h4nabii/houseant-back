@@ -37,9 +37,10 @@ public class UserController {
 
     /**
      * 响应登录请求的函数
-     * @param params 登录请求请求体，内含登录账号与密码。
+     *
+     * @param params   登录请求请求体，内含登录账号与密码。
      * @param response 登录响应
-     * @param request 登录请求
+     * @param request  登录请求
      * @return 返回登录结果的Map，自动转换为JSON格式的字符串
      */
     @ResponseBody
@@ -86,7 +87,7 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(Map.of(
-                "login",login,
+                "login", login,
                 "message", msg,
                 "userMsg", userData
         ));
@@ -109,6 +110,7 @@ public class UserController {
         logger.info("Logout succeed");
         return ResponseEntity.ok().body("Logout success");
     }
+
     @NoLogin
     @PostMapping("/register")
     public ResponseEntity<?> register(@NonNull @RequestBody User user) {
@@ -134,5 +136,23 @@ public class UserController {
                 "success", success,
                 "message", msg
         ));
+    }
+
+    @PostMapping("/updateUser")
+    public ResponseEntity<?> updateUser(@NonNull @RequestBody User user) {
+        String msg;
+        userService.update(user);
+        msg = "updateUser successfully";
+        return ResponseEntity.ok().body(Map.of("message", msg));
+    }
+
+    @PostMapping("/searchUser")
+    public ResponseEntity<?> searchUser(@NonNull HttpServletRequest request) {
+        String msg;
+        User res = userService.findByAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
+        msg = "searchUser successfully";
+        return ResponseEntity.ok().body(Map.of(
+                "result", res,
+                "message", msg));
     }
 }

@@ -21,4 +21,6 @@ public interface UserService {
     String generateAccount();
 
     boolean isAccountAvailable(String Account);
+
+
 }
