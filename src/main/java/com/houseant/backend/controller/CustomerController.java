@@ -31,7 +31,7 @@ public class CustomerController {
             @NonNull HttpServletRequest request){
         String msg;
         reservation.setAccount(((User)(request.getSession().getAttribute("user"))).getAccount());
-        reservationService.create(reservation);
+        reservationService.insert(reservation);
         msg = "addReservation Successfully";
         return ResponseEntity.ok().body(Map.of("message", msg));
     }
