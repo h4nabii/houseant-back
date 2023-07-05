@@ -146,8 +146,8 @@ public class UserController {
         return ResponseEntity.ok().body(Map.of("message", msg));
     }
 
-    @PostMapping("/searchUser")
-    public ResponseEntity<?> searchUser(@NonNull HttpServletRequest request) {
+    @PostMapping("/userInfo")
+    public ResponseEntity<?> userInfo(@NonNull HttpServletRequest request) {
         String msg;
         User res = userService.findByAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
         msg = "searchUser successfully";
