@@ -6,6 +6,7 @@ import com.houseant.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,5 +48,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByAccount(String account) {
         return userDAO.findByAccount(account);
+    }
+
+    @Override
+    public String generateAccount() {
+        return String.valueOf(new Date().getTime());
+    }
+
+    @Override
+    public boolean isAccountAvailable(String account) {
+        return userDAO.findByAccount(account) == null;
     }
 }

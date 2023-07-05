@@ -1,6 +1,5 @@
 package com.houseant.backend.controller;
 
-import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
@@ -21,15 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
-
 /**
  * 处理客户端发来的有关用户信息的请求
  */
-
-
-
-
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -122,12 +115,6 @@ public class UserController {
         return ResponseEntity.ok().body(responseMsg);
     }
 
-    /**
-     * 响应退出登录的请求
-     * @param response 登出响应
-     * @param request 登出请求
-     * @return 响应体
-     */
     @GetMapping("/logout")
     public ResponseEntity<?> logout(
             HttpServletResponse response,
@@ -146,19 +133,29 @@ public class UserController {
     }
     @NoLogin
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User newUser) {
-        Logger logger = LogManager.getLogger(UserController.class);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        boolean success;
+        String msg;
+
         // Check if account is already used
-        User existingUser = userService.findByAccount(newUser.getAccount());
-        if (existingUser != null) {
-            logger.warn("Account already exists");
-            return ResponseEntity.badRequest().body("Account already exists");
+        if (userService.isAccountAvailable(user.getAccount())) {
+            // Default settings
+            user.setUsername(user.getAccount());
+            user.setTel("");
+            user.setAvatar("");
+            userService.create(user);
+
+            msg = "User registered successfully";
+            success = true;
+        } else {
+            msg = "Account already exists";
+            success = false;
         }
 
-        // TODO: You may want to encrypt the password before saving it to the database
-        userService.create(newUser);
-        logger.info("User registered successfully");
-        return ResponseEntity.ok().body("User registered successfully");
+        return ResponseEntity.ok(Map.of(
+                "success", success,
+                "message", msg
+        ));
     }
 
     @GetMapping("/cookies")
