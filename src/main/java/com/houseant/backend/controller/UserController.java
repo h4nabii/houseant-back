@@ -4,8 +4,6 @@ import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
-import com.houseant.backend.annotations.NoLogin;
-import com.houseant.backend.service.impl.EncryptService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,12 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 处理客户端发来的有关用户信息的请求
@@ -49,39 +46,31 @@ public class UserController {
     @NoLogin
     @PostMapping("/login")
     public ResponseEntity<?> login(
-            @RequestBody Map<String, Object> params,
-            HttpServletResponse response,
-            HttpServletRequest request) {
-
-        String cookies;
-        if (request.getCookies() != null) {
-            cookies = Arrays.stream(request.getCookies())
-                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-                    .collect(Collectors.joining(","));
-            logger.info(cookies);
-
-            logger.info("get cookies");
-        }
-
-        logger.info("Entering login model");
-
-        var responseMsg = new HashMap<String, Object>();
+            @NonNull @RequestBody Map<String, Object> params,
+            @NonNull HttpServletResponse response,
+            @NonNull HttpServletRequest request) {
+        logger.info("Login from " + request.getRemoteAddr());
+        boolean login = false;
+        String msg;
+        Map<String, Object> userData = new HashMap<>();
 
         String accountGet = (String) params.get("account");
         String passwordGet = (String) params.get("password");
 
         User user = userService.findByAccount(accountGet);
         if (user == null) {
-            logger.warn("User not found");
-
-            // Response data
-            responseMsg.put("login", false);
-            responseMsg.put("message", "User not found");
+            msg = "User not found";
+            logger.warn(msg);
 
         } else if (user.getPassword().equals(passwordGet)) {
-            // Create a cookie
+            msg = "Login succeed";
+            logger.info(msg);
 
-            Cookie cookie = tokenService.createToken(user);
+            login = true;
+            userData = user.getUserMsgExceptPasswd();
+
+            // Create a cookie
+            Cookie cookie = tokenService.createTokenCookie(user);
             cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
             cookie.setPath("/");
             logger.info(cookie.getValue());
@@ -90,37 +79,25 @@ public class UserController {
             // Create a session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            logger.info("Login succeed");
-
-            // Response data
-            responseMsg.put("login", true);
-            responseMsg.put("message", "Login succeed");
-            responseMsg.put("userMsg", user.getUserMsgExceptPasswd());
 
         } else {
-            logger.warn(user);
-            logger.warn("wrong password");
-
-            // Response data
-            responseMsg.put("login", false);
-            responseMsg.put("message", "Wrong password");
+            msg = "Wrong password";
+            logger.warn(msg + ": " + user.getAccount());
         }
 
-        if (request.getCookies() != null) {
-            cookies = Arrays.stream(request.getCookies())
-                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-                    .collect(Collectors.joining(","));
-            logger.info(cookies);
-        }
-
-        return ResponseEntity.ok().body(responseMsg);
+        return ResponseEntity.ok().body(Map.of(
+                "login",login,
+                "message", msg,
+                "userMsg", userData
+        ));
     }
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout(
-            HttpServletResponse response,
-            HttpServletRequest request) {
-        Logger logger = LogManager.getLogger(UserController.class);
+            @NonNull HttpServletResponse response,
+            @NonNull HttpServletRequest request) {
+        logger.info("Logout from " + request.getRemoteAddr());
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
@@ -134,11 +111,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@NonNull @RequestBody User user) {
+        logger.info("Registering for " + user.getAccount());
         boolean success;
         String msg;
 
-        // Check if account is already used
         if (userService.isAccountAvailable(user.getAccount())) {
             // Default settings
             user.setUsername(user.getAccount());
@@ -158,22 +135,4 @@ public class UserController {
                 "message", msg
         ));
     }
-
-    @GetMapping("/cookies")
-    public String getCookies(HttpServletRequest request) {
-        String cookies = null;
-        var cookiesArr = request.getCookies();
-        if (cookiesArr != null) {
-            cookies = Arrays.stream(cookiesArr)
-                    .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-                    .collect(Collectors.joining(","));
-            logger.info("Cookies: " + cookies);
-        } else {
-            cookies = "No cookies";
-        }
-        return "Cookies: " + cookies;
-    }
-
-
-
 }

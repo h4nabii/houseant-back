@@ -22,42 +22,35 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public boolean validateToken(String token) {
-        String[] parts = token.split(splitChar);
-        if (parts.length != 2) {
-            return false;
+    public boolean validateCookie(Cookie cookie) {
+        if (cookie.getName().equals(cookieName)) {
+            String[] parts = cookie.getValue().split(splitChar);
+
+            if (parts.length == 2) {
+                String account = parts[0];
+                String encryptedPassword = parts[1];
+
+                User user;
+                if ((user = userService.findByAccount(account)) != null) {
+                    return encryptedPassword.equals(encryptService.encrypt(user.getPassword()));
+                }
+            }
         }
-
-        String account = parts[0];
-        String encryptedPassword = parts[1];
-
-        User user = userService.findByAccount(account);
-        if (user == null) {
-            return false;
-        }
-
-        String actualEncryptedPassword = encryptService.encrypt(user.getPassword());
-
-        return encryptedPassword.equals(actualEncryptedPassword);
+        return false;
     }
 
-
     @Override
-    public Cookie createToken(User user) {
+    public Cookie createTokenCookie(User user) {
         return new Cookie(
                 cookieName,
                 user.getAccount() + splitChar + encryptService.encrypt(user.getPassword())
         );
-
     }
 
     @Override
-    public String getAccountFromToken(String token) {
-        return token.split(splitChar)[0];
-    }
-
-    @Override
-    public String getPasswdFromToken(String token) {
-        return token.split(splitChar)[1];
+    public String getAccountFromCookie(Cookie cookie) {
+        if (cookie.getName().equals(cookieName))
+            return cookie.getValue().split(splitChar)[0];
+        return null;
     }
 }
