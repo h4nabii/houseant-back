@@ -1,9 +1,11 @@
 package com.houseant.backend.controller;
 
+import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
 import com.houseant.backend.annotations.NoLogin;
+import com.houseant.backend.service.impl.EncryptService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,12 +30,12 @@ public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
     private final UserService userService;
-    private  final TokenService tokenService;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserController(UserService userService ,TokenService tokenService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
-        this.tokenService=tokenService;
+        this.tokenService = tokenService;
     }
 
     /**
