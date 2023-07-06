@@ -18,10 +18,3 @@ public interface HouseService {
 
 
 }
-
-class HouseUpdater {
-    public HouseUpdater(House house) {
-
-    }
-
-}

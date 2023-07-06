@@ -28,8 +28,7 @@ public class House {
             String layout,
             String developer,
             String build_time,
-            boolean has_elevator
-    ) {
+            boolean has_elevator) {
         this.house_id = house_id;
         this.account = account;
         this.name = name;
@@ -153,6 +152,7 @@ public class House {
     public String toString() {
         return "House{" +
                 "house_id=" + house_id +
+                ", account='" + account + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", direction='" + direction + '\'' +
