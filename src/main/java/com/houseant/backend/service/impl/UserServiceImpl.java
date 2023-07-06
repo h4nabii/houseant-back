@@ -3,7 +3,6 @@ package com.houseant.backend.service.impl;
 import com.houseant.backend.dao.UserDAO;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,7 +14,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
 
-    @Autowired
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

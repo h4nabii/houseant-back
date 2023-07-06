@@ -3,7 +3,6 @@ package com.houseant.backend.service.impl;
 import com.houseant.backend.dao.ReservationDAO;
 import com.houseant.backend.entity.Reservation;
 import com.houseant.backend.service.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationDAO reservationDAO;
 
-    @Autowired
     public ReservationServiceImpl(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
     }
