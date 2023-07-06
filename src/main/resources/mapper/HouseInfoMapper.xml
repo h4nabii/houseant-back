@@ -20,15 +20,15 @@
 
     <select id="findAll" resultMap="HouseResultMap">
         SELECT *
-        FROM housesrc reservation
-        WHERE
+        FROM housesrc
+        WHERE housesrc.house_id not in (SELECT house_id FROM reservation)
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-            account=#{account}
+            account=#{account} AND housesrc.house_id not in (SELECT house_id FROM reservation)
             <if test="name != null">
                 AND name = #{name}
             </if>
