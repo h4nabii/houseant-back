@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,6 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
     private final TokenService tokenService;
     private final UserService userService;
 
-    @Autowired
     public AutoLoginInterceptor(TokenService tokenService, UserService userService) {
         this.tokenService = tokenService;
         this.userService = userService;

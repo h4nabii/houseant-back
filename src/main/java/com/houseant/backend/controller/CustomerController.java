@@ -5,7 +5,9 @@ import com.houseant.backend.entity.User;
 import com.houseant.backend.service.HouseService;
 import com.houseant.backend.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +18,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
+    private static final Logger logger = LogManager.getLogger(CustomerController.class);
+
     private final ReservationService reservationService;
     private final HouseService houseService;
 
-    @Autowired
     public CustomerController(ReservationService reservationService, HouseService houseService) {
         this.reservationService = reservationService;
         this.houseService = houseService;
     }
 
-    //1.确定预约
-    //  ReservationService -->   insert
+    // 1.确定预约
+    // ReservationService --> insert
     @PostMapping("/addReservation")
-    public ResponseEntity<?> addReservation(
+    public ResponseEntity<Map<String, Object>> addReservation(
             @RequestBody Reservation reservation,
             @NonNull HttpServletRequest request) {
         String msg;
@@ -38,24 +41,24 @@ public class CustomerController {
         return ResponseEntity.ok().body(Map.of("message", msg));
     }
 
-    //2.查看预约
-    //  ReservationService  -->  findByAccount
+    // 2.查看预约
+    // ReservationService --> findByAccount
     @GetMapping("/findByAccount")
-    public ResponseEntity<?> findByAccount(
+    public ResponseEntity<Map<String, Object>> findByAccount(
             @NonNull HttpServletRequest request) {
         String msg;
-        List<Reservation> res = reservationService.findByAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
+        List<Reservation> res = reservationService
+                .findByAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
         msg = "findByAccount Successfully";
         return ResponseEntity.ok().body(Map.of(
                 "result", res,
-                "message", msg
-        ));
+                "message", msg));
     }
 
-    //3.查看房源
-    //  HouseService  -->  findByKey
+    // 3.查看房源
+    // HouseService --> findByKey
     @PostMapping("/findByKey")
-    public ResponseEntity<?> findByKey(
+    public ResponseEntity<Map<String, Object>> findByKey(
             @NonNull HttpServletRequest request,
             @NonNull @RequestBody Map<String, Object> params) {
         String msg;
@@ -65,7 +68,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("deleteReservation")
-    public ResponseEntity<?> deleteReservation(@RequestParam int id, @NonNull HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> deleteReservation(@RequestParam int id,
+            @NonNull HttpServletRequest request) {
         String msg;
         Reservation res = (reservationService.findById(id));
         if (res.getAccount().equals(((User) (request.getSession().getAttribute("user"))).getAccount())) {
@@ -77,14 +81,14 @@ public class CustomerController {
             return ResponseEntity.ok().body(Map.of("message", msg));
         }
 
-
     }
 
     @PostMapping("/updateReservationInfo")
-    public ResponseEntity<?> updateHouseInfo(@RequestBody Reservation newReservation, @NonNull HttpServletRequest request) {
+    public ResponseEntity<String> updateHouseInfo(@RequestBody Reservation newReservation,
+            @NonNull HttpServletRequest request) {
         newReservation.setAccount(((User) request.getSession().getAttribute("user")).getAccount());
         reservationService.update(newReservation);
-        //logger.info("successfully update a house info");
+        logger.info("successfully update a house info");
         return ResponseEntity.ok().body("successfully update a reservation info");
     }
 }

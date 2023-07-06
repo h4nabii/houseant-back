@@ -3,7 +3,6 @@ package com.houseant.backend.service.impl;
 import com.houseant.backend.dao.HouseInfoDAO;
 import com.houseant.backend.entity.House;
 import com.houseant.backend.service.HouseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Map;
 public class HouseServiceImpl implements HouseService {
     private final HouseInfoDAO houseInfoDAO;
 
-    @Autowired
     public HouseServiceImpl(HouseInfoDAO houseInfoDAO) {
         this.houseInfoDAO = houseInfoDAO;
     }

@@ -4,7 +4,6 @@ import com.houseant.backend.entity.User;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
 import jakarta.servlet.http.Cookie;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +14,6 @@ public class TokenServiceImpl implements TokenService {
     private final UserService userService;
     private final EncryptService encryptService;
 
-    @Autowired
     public TokenServiceImpl(UserService userService, EncryptService encryptService) {
         this.userService = userService;
         this.encryptService = encryptService;
