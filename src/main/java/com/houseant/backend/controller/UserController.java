@@ -188,4 +188,14 @@ public class UserController {
         return ResponseEntity.ok().body(Map.of(
                 "result", houseInfos));
     }
+
+    @GetMapping("/myHouseInfo")
+    public ResponseEntity<?> myHouseInfo(@NonNull HttpServletRequest request) {
+        var param = new HashMap<String, Object>();
+        User currentUser =(User) request.getSession().getAttribute("user");
+        param.put("account", currentUser.getAccount());
+        List<House> houseInfos = houseService.findByKey(param);
+        return ResponseEntity.ok().body(Map.of(
+                "result", houseInfos));
+    }
 }
