@@ -137,8 +137,23 @@ public class UserController {
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<?> updateUser(@NonNull @RequestBody User user) {
+    public ResponseEntity<?> updateUser(@NonNull @RequestBody User user, @NonNull HttpServletRequest request) {
         String msg;
+        if(user.getPassword()==null){
+            return ResponseEntity.ok().body(Map.of("message","password is empty"));
+        }
+        else if(user.getUsername()==null){
+                return ResponseEntity.ok().body(Map.of("message","Username is empty"));
+        }
+        else if(user.getTel()==null){
+            return ResponseEntity.ok().body(Map.of("message","Telephone number is empty"));
+        }
+
+        User newUser=(User)request.getSession().getAttribute("user");
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setTel(user.getTel());
+
         userService.update(user);
         msg = "updateUser successfully";
         logger.info(msg);
