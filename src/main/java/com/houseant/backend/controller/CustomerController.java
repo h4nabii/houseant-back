@@ -92,4 +92,5 @@ public class CustomerController {
         reservationService.update(newReservation);
         return ResponseEntity.ok().body("successfully update a reservation info");
     }
+
 }

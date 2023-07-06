@@ -2,8 +2,10 @@ package com.houseant.backend.controller;
 
 import com.houseant.backend.annotations.NoLogin;
 import com.houseant.backend.entity.House;
+import com.houseant.backend.entity.Reservation;
 import com.houseant.backend.entity.User;
 import com.houseant.backend.service.HouseService;
+import com.houseant.backend.service.ReservationService;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,12 +33,14 @@ public class UserController {
     private final UserService userService;
     private final TokenService tokenService;
     private final HouseService houseService;
+    private final ReservationService reservationService;
 
     @Autowired
-    public UserController(UserService userService, TokenService tokenService, HouseService houseService) {
+    public UserController(UserService userService, TokenService tokenService, HouseService houseService,ReservationService reservationService) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.houseService = houseService;
+        this.reservationService=reservationService;
     }
 
     /**
@@ -197,5 +201,14 @@ public class UserController {
         List<House> houseInfos = houseService.findByKey(param);
         return ResponseEntity.ok().body(Map.of(
                 "result", houseInfos));
+    }
+
+
+    @GetMapping("/myReservationInfo")
+    public ResponseEntity<?> myReservationInfo(@NonNull HttpServletRequest request) {
+        User currentUser =(User) request.getSession().getAttribute("user");
+        List<Reservation> reservationInfos = reservationService.findByAccount(currentUser.getAccount());
+        return ResponseEntity.ok().body(Map.of(
+                "result", reservationInfos));
     }
 }
