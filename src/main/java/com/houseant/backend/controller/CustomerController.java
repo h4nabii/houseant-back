@@ -34,6 +34,7 @@ public class CustomerController {
     public ResponseEntity<Map<String, Object>> addReservation(
             @RequestBody Reservation reservation,
             @NonNull HttpServletRequest request) {
+
         String msg;
         reservation.setAccount(((User) (request.getSession().getAttribute("user"))).getAccount());
         reservationService.insert(reservation);
@@ -89,6 +90,8 @@ public class CustomerController {
         Reservation newReservation = reservationService.findById(reservation.getRes_id());
         if (reservation.getContent() != null) newReservation.setContent(reservation.getContent());
         if (reservation.getType() != null) newReservation.setType(reservation.getType());
+        if (reservation.getTime() != null) newReservation.setTime(reservation.getTime());
+        if (reservation.getHouse_id() != 0) newReservation.setHouse_id(reservation.getHouse_id());
         reservationService.update(newReservation);
         return ResponseEntity.ok().body("successfully update a reservation info");
     }

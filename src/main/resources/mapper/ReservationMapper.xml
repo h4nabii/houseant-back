@@ -30,8 +30,8 @@
 
 
     <insert id="insert" parameterType="com.houseant.backend.entity.Reservation">
-        INSERT INTO reservation (account, time, type, content)
-        VALUES (#{account}, #{time}, #{type}, #{content})
+        INSERT INTO reservation (house_id, account, time, type, content)
+        VALUES (#{house_id} ,#{account}, #{time}, #{type}, #{content})
     </insert>
 
     <delete id="delete">
@@ -43,7 +43,8 @@
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
     <update id="update" parameterType="com.houseant.backend.entity.Reservation">
         UPDATE reservation
-        SET account = #{account},
+        SET house_id = #{house_id},
+            account = #{account},
             time    = #{time},
             type    = #{type},
             content = #{content}
