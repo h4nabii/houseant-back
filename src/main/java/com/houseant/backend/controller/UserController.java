@@ -171,7 +171,7 @@ public class UserController {
         if (user.getPassword() == null) {
             return ResponseEntity.ok().body(Map.of("keep", true, "message", "Successfully update userIfo"));
         } else {
-            return ResponseEntity.ok().body(Map.of("keep", false, "message", "Successfully update userIfo and logout"));
+            return ResponseEntity.ok().body(Map.of("keep", false, "message", "Successfully update userIfo"));
         }
     }
 
