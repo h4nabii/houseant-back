@@ -2,6 +2,7 @@ package com.houseant.backend;
 
 import com.houseant.backend.controller.UserController;
 import com.houseant.backend.entity.User;
+import com.houseant.backend.service.HouseService;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
 
@@ -38,6 +39,9 @@ public class UserControllerTest {
 
     @Mock
     UserService userService;
+
+    @Mock
+    HouseService houseService;
 
     @Mock
     TokenService tokenService;
@@ -234,4 +238,10 @@ public class UserControllerTest {
         assertEquals(mockUser, body.get("result"));
     }
 
+    @Test
+    void findAllHouseInfo() {
+        ResponseEntity<?> responseEntity = userController.findAllHouseInfo();
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+    }
 }
