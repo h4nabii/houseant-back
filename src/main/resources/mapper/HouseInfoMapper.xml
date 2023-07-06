@@ -28,7 +28,7 @@
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-            housesrc.house_id not in (SELECT house_id FROM reservation)
+
             <if test="account != null">
                 AND account = #{account}
             </if>
