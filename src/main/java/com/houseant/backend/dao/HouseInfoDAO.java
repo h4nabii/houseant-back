@@ -12,6 +12,8 @@ public interface HouseInfoDAO {
 
     List<House> findByKey(Map<String, Object> params);
 
+    List<House> reservableHouse(Map<String, Object> params);
+
     void insert(House house);
 
     void delete(Integer id);

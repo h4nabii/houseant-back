@@ -25,6 +25,7 @@ public class HouseServiceImpl implements HouseService {
     public List<House> findByKey(Map<String, Object> params) {
         return houseInfoDAO.findByKey(params);
     }
+    public List<House> reservableHouse(Map<String, Object> params){return houseInfoDAO.reservableHouse(params);}
 
     @Override
     public void insert(House house) {
