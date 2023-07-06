@@ -1,7 +1,9 @@
 package com.houseant.backend.controller;
 
 import com.houseant.backend.annotations.NoLogin;
+import com.houseant.backend.entity.House;
 import com.houseant.backend.entity.User;
+import com.houseant.backend.service.HouseService;
 import com.houseant.backend.service.TokenService;
 import com.houseant.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,11 +30,13 @@ public class UserController {
 
     private final UserService userService;
     private final TokenService tokenService;
+    private final HouseService houseService;
 
     @Autowired
-    public UserController(UserService userService, TokenService tokenService) {
+    public UserController(UserService userService, TokenService tokenService, HouseService houseService) {
         this.userService = userService;
         this.tokenService = tokenService;
+        this.houseService = houseService;
     }
 
     /**
@@ -139,17 +144,17 @@ public class UserController {
     @PostMapping("/updateUser")
     public ResponseEntity<?> updateUser(@NonNull @RequestBody User user, @NonNull HttpServletRequest request) {
 
-        String newTel=user.getTel(), newName=user.getUsername(), newPassword=user.getPassword();
+        String newTel = user.getTel(), newName = user.getUsername(), newPassword = user.getPassword();
         User newUser = (User) request.getSession().getAttribute("user");
         if (user.getTel() == null) {
             newTel = newUser.getTel();
         }
         if (user.getUsername() == null) {
-          newName=newUser.getUsername();
+            newName = newUser.getUsername();
         }
         if (user.getPassword() == null) {
-            newPassword=newUser.getPassword();
-        }else {
+            newPassword = newUser.getPassword();
+        } else {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
@@ -159,10 +164,10 @@ public class UserController {
         newUser.setPassword(newPassword);
         newUser.setUsername(newName);
         userService.update(newUser);
-        if(user.getPassword() == null){
-        return ResponseEntity.ok().body(Map.of("keep",true,"message", "Successfully update userIfo"));
-        }else {
-            return ResponseEntity.ok().body(Map.of("keep",false,"message", "Successfully update userIfo and logout"));
+        if (user.getPassword() == null) {
+            return ResponseEntity.ok().body(Map.of("keep", true, "message", "Successfully update userIfo"));
+        } else {
+            return ResponseEntity.ok().body(Map.of("keep", false, "message", "Successfully update userIfo and logout"));
         }
     }
 
@@ -174,5 +179,13 @@ public class UserController {
         return ResponseEntity.ok().body(Map.of(
                 "result", res,
                 "message", msg));
+    }
+
+    @NoLogin
+    @GetMapping("/findAllHouseInfo")
+    public ResponseEntity<?> findAllHouseInfo() {
+        List<House> houseInfos = houseService.findAll();
+        return ResponseEntity.ok().body(Map.of(
+                "result", houseInfos));
     }
 }

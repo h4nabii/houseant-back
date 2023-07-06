@@ -38,8 +38,8 @@
             <if test="direction != null">
                 AND direction = #{direction}
             </if>
-            <if test="area != null">
-                AND area = #{area}
+            <if test="areaMin != null and areaMax != null">
+                AND area BETWEEN #{areaMin} AND #{areaMax}
             </if>
             <if test="layout != null">
                 AND layout = #{layout}
