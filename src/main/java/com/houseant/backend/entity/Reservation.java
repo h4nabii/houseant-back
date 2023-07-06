@@ -2,13 +2,15 @@ package com.houseant.backend.entity;
 
 public class Reservation {
     private int res_id;
+    private int house_id;
     private String account;
     private String time;
     private String type;
     private String content;
 
-    public Reservation(int res_id, String account, String time, String type, String content) {
+    public Reservation(int res_id, int house_id, String account, String time, String type, String content) {
         this.res_id = res_id;
+        this.house_id = house_id;
         this.account = account;
         this.time = time;
         this.type = type;
@@ -21,6 +23,14 @@ public class Reservation {
 
     public void setRes_id(int res_id) {
         this.res_id = res_id;
+    }
+
+    public int getHouse_id() {
+        return house_id;
+    }
+
+    public void setHouse_id(int house_id) {
+        this.house_id = house_id;
     }
 
     public String getAccount() {
@@ -59,6 +69,7 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "res_id=" + res_id +
+                ", house_id=" + house_id +
                 ", account='" + account + '\'' +
                 ", time='" + time + '\'' +
                 ", type='" + type + '\'' +
