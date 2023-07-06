@@ -130,7 +130,7 @@ public class UserController {
             success = false;
         }
 
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity.ok().body(Map.of(
                 "success", success,
                 "message", msg
         ));

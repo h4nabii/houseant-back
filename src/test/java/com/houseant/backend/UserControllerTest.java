@@ -115,8 +115,123 @@ public class UserControllerTest {
         assertEquals(200, responseEntity.getStatusCodeValue());
         verify(tokenService, times(1)).createInvalidCookie();
     }
-    
-    // Similarly, you can add more test methods for logout, register, updateUser,
-    // userInfo
+
+    @Test
+    public void testRegisterSuccessed() {
+        when(userService.isAccountAvailable("test_account")).thenReturn(true);
+         Map<String, Object> params = new HashMap<>();
+        params.put("account", "test_account");
+        params.put("password", "test_passwordWrong");
+
+        User user = new User();
+
+        user.setAccount("test_account");
+        user.setPassword("test_password");
+        user.setTel("test_tel");
+        user.setUsername("test_username");
+        user.setStatus(false);
+
+        ResponseEntity<Map<String, Object>> responseEntity = (ResponseEntity<Map<String, Object>>) userController.register(user);
+        Map<String, Object> response = responseEntity.getBody();
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(true,response.get("success"));
+    }
+
+    @Test
+    public void testRegisterFailed() {
+        when(userService.isAccountAvailable("test_account")).thenReturn(false);
+         Map<String, Object> params = new HashMap<>();
+        params.put("account", "test_account");
+        params.put("password", "test_passwordWrong");
+
+        User user = new User();
+
+        user.setAccount("test_account");
+        user.setPassword("test_password");
+        user.setTel("test_tel");
+        user.setUsername("test_username");
+        user.setStatus(false);
+
+        ResponseEntity<Map<String, Object>> responseEntity = (ResponseEntity<Map<String, Object>>) userController.register(user);
+        Map<String, Object> response = responseEntity.getBody();
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals(false,response.get("success"));
+    }
+
+    @Test
+    void testUpdateUserWithPassword() {
+        User mockUser = new User();
+        mockUser.setAccount("test_account");
+        mockUser.setUsername("test_username");
+        mockUser.setPassword("test_password");
+        mockUser.setTel("test_tel");
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.getSession().setAttribute("user", mockUser);
+
+        User updateUser = new User();
+        updateUser.setUsername("updated_username");
+        updateUser.setPassword("updated_password");
+        updateUser.setTel("updated_tel");
+
+        ResponseEntity<?> responseEntity = userController.updateUser(updateUser, mockRequest);
+
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+
+        // 验证更新后的信息是否正确
+        Map<String, Object> response = (Map<String, Object>) responseEntity.getBody();
+        assertEquals("Successfully update userIfo and logout", response.get("message"));
+    }
+
+    @Test
+    void testUpdateUser() {
+        User mockUser = new User();
+        mockUser.setAccount("test_account");
+        mockUser.setUsername("test_username");
+        mockUser.setTel("test_tel");
+
+        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
+        mockRequest.getSession().setAttribute("user", mockUser);
+
+        User updateUser = new User();
+        updateUser.setUsername("updated_username");
+        updateUser.setTel("updated_tel");
+
+        ResponseEntity<?> responseEntity = userController.updateUser(updateUser, mockRequest);
+
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+
+        // 验证更新后的信息是否正确
+        Map<String, Object> response = (Map<String, Object>) responseEntity.getBody();
+        assertEquals("Successfully update userIfo", response.get("message"));
+    }
+
+    @Test
+    void testUserInfo() {
+        User mockUser = new User();
+        mockUser.setAccount("test_account");
+        mockUser.setUsername("test_username");
+        mockUser.setPassword("test_password");
+        mockUser.setTel("test_tel");
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession().setAttribute("user", mockUser);
+
+        when(userService.findByAccount(mockUser.getAccount())).thenReturn(mockUser);
+
+        ResponseEntity<?> responseEntity = userController.userInfo(request);
+        assertNotNull(responseEntity);
+        assertEquals(200, responseEntity.getStatusCodeValue());
+
+        Map<String, Object> body = (Map<String, Object>) responseEntity.getBody();
+        assertNotNull(body);
+
+        assertEquals("searchUser successfully", body.get("message"));
+        assertEquals(mockUser, body.get("result"));
+    }
 
 }
