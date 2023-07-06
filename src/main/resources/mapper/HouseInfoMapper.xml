@@ -28,7 +28,6 @@
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-
             <if test="account != null">
                 AND account = #{account}
             </if>
@@ -67,6 +66,52 @@
 
         </where>
     </select>
+
+
+    <select id="reservableHouse" parameterType="java.util.Map" resultMap="HouseResultMap">
+        SELECT * FROM housesrc
+        <where>
+            housesrc.house_id not in (SELECT house_id FROM reservation)
+            <if test="account != null">
+                AND account = #{account}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="address != null">
+                AND address = #{address}
+            </if>
+            <if test="direction != null">
+                AND direction = #{direction}
+            </if>
+            <if test="areaMin != null and areaMax != null">
+                AND area BETWEEN #{areaMin} AND #{areaMax}
+            </if>
+            <if test="layout != null">
+                AND layout = #{layout}
+            </if>
+            <if test="priceMin != null and priceMax != null ">
+                AND price BETWEEN #{priceMin} AND #{priceMax}
+            </if>
+
+            <if test="developer != null">
+                AND developer = #{developer}
+            </if>
+            <if test="floorMin != null and floorMax != null">
+                AND floor BETWEEN #{floorMin} AND #{floorMax}
+            </if>
+            <if test="hasElevator != null">
+                AND has_elevator = #{hasElevator}
+            </if>
+            <if test="buildTimeMin !=null and buildTimeMax != null">
+                AND build_time BETWEEN #{buildTimeMin} AND #{buildTimeMax}
+            </if>
+
+
+        </where>
+    </select>
+
+
 
     <insert id="insert" parameterType="com.houseant.backend.entity.House">
         INSERT INTO housesrc (account, name, address, direction, area, layout, price, picture, developer, floor,
