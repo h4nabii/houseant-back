@@ -21,13 +21,14 @@
     <select id="findAll" resultMap="HouseResultMap">
         SELECT *
         FROM housesrc
+        WHERE housesrc.house_id not in (SELECT house_id FROM reservation)
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->
     <select id="findByKey" parameterType="java.util.Map" resultMap="HouseResultMap">
         SELECT * FROM housesrc
         <where>
-            account=#{account}
+            account=#{account} AND housesrc.house_id not in (SELECT house_id FROM reservation)
             <if test="name != null">
                 AND name = #{name}
             </if>
@@ -43,18 +44,21 @@
             <if test="layout != null">
                 AND layout = #{layout}
             </if>
-            <if test="price != null">
-                AND price &lt; #{price}
+            <if test="priceMin != null and priceMax != null ">
+                AND price BETWEEN #{priceMin} AND #{priceMax}
             </if>
 
             <if test="developer != null">
                 AND developer = #{developer}
             </if>
-            <if test="floor != null">
-                AND floor = #{floor}
+            <if test="floorMin != null and floorMax != null">
+                AND floor BETWEEN #{floorMin} AND #{floorMax}
             </if>
-            <if test="has_elevator != null">
-                AND has_elevator = #{has_elevator}
+            <if test="hasElevator != null">
+                AND has_elevator = #{hasElevator}
+            </if>
+            <if test="buildTimeMin !=null and buildTimeMax != null">
+                AND build_time BETWEEN #{buildTimeMin} AND #{buildTimeMax}
             </if>
 
 

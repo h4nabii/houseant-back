@@ -149,12 +149,21 @@ public class UserController {
         }
         if (user.getPassword() == null) {
             newPassword=newUser.getPassword();
+        }else {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
         }
         newUser.setTel(newTel);
         newUser.setPassword(newPassword);
         newUser.setUsername(newName);
         userService.update(newUser);
-        return ResponseEntity.ok().body(Map.of("message", "Successfully update userIfo"));
+        if(user.getPassword() == null){
+        return ResponseEntity.ok().body(Map.of("keep",true,"message", "Successfully update userIfo"));
+        }else {
+            return ResponseEntity.ok().body(Map.of("keep",false,"message", "Successfully update userIfo and logout"));
+        }
     }
 
     @PostMapping("/userInfo")

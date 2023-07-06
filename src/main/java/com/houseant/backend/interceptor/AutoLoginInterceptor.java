@@ -9,11 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.json.Json;
+import javax.json.JsonObject;
 
 @Component
 public class AutoLoginInterceptor implements HandlerInterceptor {
@@ -33,6 +37,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
             @NonNull HttpServletResponse response,
             @NonNull Object handler) {
         logger.info("Enter LoginInterceptor Modules");
+       logger.info( request.getRequestURL());
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -44,10 +49,18 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
                     request.getSession().setAttribute("user", user);
                     logger.info("auto login success");
                     return true;
+
                 }
             }
         }
         logger.info(handler.getClass());
+        // Check if the request handler is BasicErrorController#error method
+        if (handler instanceof HandlerMethod handlerMethod &&
+                handlerMethod.getBeanType() == BasicErrorController.class &&
+                handlerMethod.getMethod().getName().equals("error")) {
+            logger.info("pass  BasicErrorController#error method");
+            return true;
+        }
         // Check if the request handler is a method
         if (handler instanceof HandlerMethod handlerMethod) {
             // Check if the method has the SkipLoginCheck annotation
