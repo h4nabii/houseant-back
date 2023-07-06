@@ -69,7 +69,7 @@ public class CustomerController {
 
     @DeleteMapping("deleteReservation")
     public ResponseEntity<Map<String, Object>> deleteReservation(@RequestParam int id,
-            @NonNull HttpServletRequest request) {
+                                                                 @NonNull HttpServletRequest request) {
         String msg;
         Reservation res = (reservationService.findById(id));
         if (res.getAccount().equals(((User) (request.getSession().getAttribute("user"))).getAccount())) {
@@ -84,11 +84,12 @@ public class CustomerController {
     }
 
     @PostMapping("/updateReservationInfo")
-    public ResponseEntity<String> updateHouseInfo(@RequestBody Reservation newReservation,
-            @NonNull HttpServletRequest request) {
-        newReservation.setAccount(((User) request.getSession().getAttribute("user")).getAccount());
+    public ResponseEntity<String> updateHouseInfo(@RequestBody Reservation reservation,
+                                                  @NonNull HttpServletRequest request) {
+        Reservation newReservation = reservationService.findById(reservation.getRes_id());
+        if (reservation.getContent() != null) newReservation.setContent(reservation.getContent());
+        if (reservation.getType() != null) newReservation.setType(reservation.getType());
         reservationService.update(newReservation);
-        logger.info("successfully update a house info");
         return ResponseEntity.ok().body("successfully update a reservation info");
     }
 }
