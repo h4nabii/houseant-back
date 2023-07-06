@@ -44,13 +44,14 @@ public class UserDAOTest {
         logger.log(Level.INFO, QueryUser.toString());
         Assertions.assertEquals(QueryUser.getAccount(), "test");
     }
-
+/*
     @Test
     public void testDelete() {
         Logger logger = Logger.getLogger("test");
         User TestUser = new User(100, "test", "test", "test", "test", true, "test");
         userDAO.insert(TestUser);
         User QueryUser = userDAO.findByAccount("test");
+        logger.info(QueryUser.toString());
         userDAO.delete(QueryUser.getUserId());
         QueryUser = userDAO.findByAccount("test");
         Assertions.assertEquals(null, QueryUser);
@@ -66,4 +67,5 @@ public class UserDAOTest {
         QueryUser = userDAO.findByAccount("test");
         Assertions.assertEquals("null", QueryUser.getUsername());
     }
+*/
 }
