@@ -148,7 +148,9 @@ public class UserController {
     @PostMapping("/updateUser")
     public ResponseEntity<?> updateUser(@NonNull @RequestBody User user, @NonNull HttpServletRequest request) {
 
-        String newTel = user.getTel(), newName = user.getUsername(), newPassword = user.getPassword();
+        String newTel = user.getTel();
+        String newName = user.getUsername();
+        String newPassword = user.getPassword();
         User newUser = (User) request.getSession().getAttribute("user");
         if (user.getTel() == null) {
             newTel = newUser.getTel();
@@ -158,16 +160,18 @@ public class UserController {
         }
         if (user.getPassword() == null) {
             newPassword = newUser.getPassword();
-        } else {
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                session.invalidate();
-            }
         }
         newUser.setTel(newTel);
         newUser.setPassword(newPassword);
         newUser.setUsername(newName);
         userService.update(newUser);
+        if(user.getPassword() != null){
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+        }
+
         if (user.getPassword() == null) {
             return ResponseEntity.ok().body(Map.of("keep", true, "message", "Successfully update userIfo"));
         } else {

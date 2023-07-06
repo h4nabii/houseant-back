@@ -37,7 +37,7 @@
         SET username=#{username},
             password=#{password},
             tel=#{tel}
-        WHERE user_id = #{userId}
+        WHERE account = #{account}
     </update>
 
 </mapper>
