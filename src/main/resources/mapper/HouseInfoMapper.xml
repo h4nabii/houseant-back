@@ -20,7 +20,7 @@
 
     <select id="findAll" resultMap="HouseResultMap">
         SELECT *
-        FROM housesrc
+        FROM housesrc reservation
         WHERE
     </select>
 

@@ -18,10 +18,10 @@ public class HomePageController {
     public ResponseEntity<?> home( @NonNull HttpServletRequest request) {
         // Your processing code goes here...
         var responseMsg = new HashMap<String, Object>();
-        responseMsg.put("auto-login",true);
         var session=request.getSession();
-        if(session!=null) {
+        if(session!=null&&session.getAttribute("user")!=null) {
             responseMsg.put("account", ((User)request.getSession().getAttribute("user")).getAccount());
+            responseMsg.put("auto-login",true);
         }
         return ResponseEntity.ok().body(responseMsg);
     }
