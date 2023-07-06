@@ -34,7 +34,7 @@ public class HouseServiceImplTest {
     @Test
     public void testInsert() {
 
-        House house = new House(0, "123", "zx", "111", 0, "111", "111", 0, "111", "111", "111", "111", false);
+        House house = new House(0, "123", "zx", "111", 0, 111, "111", 0, "111", "111", "111", "111", false);
         doNothing().when(houseInfoDAO).insert(house); // 模拟 houseInfoDAO.insert(house) 方法不执行任何操作
         // 执行被测试的方法
         houseService.insert(house);
@@ -46,7 +46,7 @@ public class HouseServiceImplTest {
     @Test
     public void testFindAll() {
         List<House> expectedHouses = Collections
-                .singletonList(new House(0, "zc", "zxc", "111", 0, "111", "111", 0, "111", "111", "111", "111", false));
+                .singletonList(new House(0, "zc", "zxc", "111", 0, 111, "111", 0, "111", "111", "111", "111", false));
         when(houseInfoDAO.findAll()).thenReturn(expectedHouses);
         List<House> actualHouses = houseService.findAll();
         assertEquals(expectedHouses, actualHouses);
@@ -57,7 +57,7 @@ public class HouseServiceImplTest {
     public void testFindByKey() {
         Map<String, Object> params = Collections.singletonMap("account", "zc");
         List<House> expectedHouses = Collections
-                .singletonList(new House(0, "zc", "zxc", "111", 0, "111", "111", 0, "111", "111", "111", "111", false));
+                .singletonList(new House(0, "zc", "zxc", "111", 0, 111, "111", 0, "111", "111", "111", "111", false));
         when(houseInfoDAO.findByKey(params)).thenReturn(expectedHouses);
 
         List<House> actualHouses = houseService.findByKey(params);

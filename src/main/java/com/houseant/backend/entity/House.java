@@ -5,7 +5,7 @@ public class House {
     private String name;
     private String address;
     private String direction;
-    private String area;
+    private float area;
     private String layout;
     private float price;
     private String picture;
@@ -21,7 +21,7 @@ public class House {
             String name,
             String address,
             float price,
-            String area,
+            float area,
             String picture,
             int floor,
             String direction,
@@ -84,11 +84,11 @@ public class House {
         this.direction = direction;
     }
 
-    public String getArea() {
+    public float getArea() {
         return area;
     }
 
-    public void setArea(String area) {
+    public void setArea(float area) {
         this.area = area;
     }
 
