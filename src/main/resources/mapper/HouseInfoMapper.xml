@@ -21,6 +21,7 @@
     <select id="findAll" resultMap="HouseResultMap">
         SELECT *
         FROM housesrc
+        WHERE
     </select>
 
     <!-- This is a simplified example. You might need to adjust it according to your actual table structure and requirements. -->

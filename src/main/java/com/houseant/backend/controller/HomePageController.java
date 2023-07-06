@@ -15,7 +15,7 @@ public class HomePageController {
     public ResponseEntity<?> home() {
         // Your processing code goes here...
         var responseMsg = new HashMap<String, Object>();
-        responseMsg.put("message", "Welcome to the home page!");
+        responseMsg.put("auto-login",true);
         return ResponseEntity.ok().body(responseMsg);
     }
 }

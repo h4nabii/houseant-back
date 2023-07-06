@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 @Component
 public class AutoLoginInterceptor implements HandlerInterceptor {
 
