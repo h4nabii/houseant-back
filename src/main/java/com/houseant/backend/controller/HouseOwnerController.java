@@ -70,7 +70,7 @@ public class HouseOwnerController {
     @PostMapping("/search")
     public ResponseEntity<Map<String, Object>> search(@NonNull @RequestBody Map<String, Object> params,
             @NonNull HttpServletRequest request) {
-        logger.info("sdgfsgf123");
+        logger.info("search houseInfo");
         String account_get = ((User) request.getSession().getAttribute("user")).getAccount();
         params.put("account", account_get);
         List<House> houseList = houseService.findByKey(params);
