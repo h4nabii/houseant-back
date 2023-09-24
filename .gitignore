@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### saves password
+/src/main/resources/application.properties
